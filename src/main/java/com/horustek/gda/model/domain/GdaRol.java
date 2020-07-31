@@ -2,7 +2,7 @@ package com.horustek.gda.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.horustek.gda.infra.audit.Auditable;
+import com.horustek.gda.infra.auditoria.Auditable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,8 +21,8 @@ import org.hibernate.annotations.GenericGenerator;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Gda_Rol.class)
-public class Gda_Rol extends Auditable {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = GdaRol.class)
+public class GdaRol extends Auditable {
 
     @Id
     @GeneratedValue(generator = "system-uuid-gda_rol")

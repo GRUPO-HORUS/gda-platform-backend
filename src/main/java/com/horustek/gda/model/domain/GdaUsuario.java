@@ -1,9 +1,9 @@
 package com.horustek.gda.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.horustek.gda.infra.audit.Auditable;
+import com.horustek.gda.infra.auditoria.Auditable;
+
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -15,9 +15,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,9 +30,9 @@ import org.hibernate.annotations.GenericGenerator;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Gda_Usuario.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = GdaUsuario.class)
 
-public class Gda_Usuario extends Auditable {
+public class GdaUsuario extends Auditable {
 
 
     @Id
@@ -42,11 +42,11 @@ public class Gda_Usuario extends Auditable {
     @Column(name = "id")
     private String id;
 
-    @Column(unique = true, length = 20)
-    private String usuario;
+    @Column(name = "nombre_usuario", unique = true, length = 20)
+    private String nombreUsuario;
 
-    @Column(length = 60)
-    private String password;
+    @Column(name = "credencial", length = 60)
+    private String credencial;
 
     private Boolean enabled;
 
@@ -55,10 +55,10 @@ public class Gda_Usuario extends Auditable {
     @Column(unique = true)
     private String email;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
     @JoinTable(name = "gda_usuarios_roles", joinColumns = @JoinColumn(name = "gda_usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "gda_role_id"),
             uniqueConstraints = {@UniqueConstraint(columnNames = {"gda_usuario_id", "gda_role_id"})})
-    private List<Gda_Rol> roles;
+    private List<GdaRol> roles;
 
 }

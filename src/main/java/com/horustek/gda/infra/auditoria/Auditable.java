@@ -1,4 +1,4 @@
-package com.horustek.gda.infra.audit;
+package com.horustek.gda.infra.auditoria;
 
 import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class Auditable implements Serializable {
+
+
 
     @CreatedBy
     @Column(updatable = false)

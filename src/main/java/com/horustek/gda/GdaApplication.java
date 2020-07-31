@@ -1,11 +1,6 @@
 package com.horustek.gda;
 
-import com.horustek.gda.model.domain.Gda_Rol;
-import com.horustek.gda.model.domain.Gda_Usuario;
-import com.horustek.gda.repositories.security.UsuarioRepository;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import com.horustek.gda.repositories.seguridad.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -54,13 +49,13 @@ public class GdaApplication implements CommandLineRunner {
 //        usuarioRepository.save(usuario);
 //        usuarioRepository.save(usuario1);
 
-        Optional<Gda_Usuario> usuario = usuarioRepository.findById("f70c86ef-5b6f-4fe2-8cdf-d46560d7ad4d");
-        Gda_Usuario salva = null;
-
-        if (usuario.isPresent()) {
-            salva = usuario.get();
-            usuarioRepository.delete(salva);
-        }
+//        Optional<Gda_Usuario> usuario = usuarioRepository.findById("e17e6941-4937-48bc-b47f-88d881b19ae7");
+//        Gda_Usuario salva = null;
+//
+//        if (usuario.isPresent()) {
+//            salva = usuario.get();
+//            usuarioRepository.delete(salva);
+//        }
 
 
     }
