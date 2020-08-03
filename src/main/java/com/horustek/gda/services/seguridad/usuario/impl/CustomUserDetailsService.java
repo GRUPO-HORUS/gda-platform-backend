@@ -1,4 +1,4 @@
-package com.horustek.gda.services.usuario.impl;
+package com.horustek.gda.services.seguridad.usuario.impl;
 
 import com.horustek.gda.model.domain.GdaUsuario;
 import com.horustek.gda.repositories.seguridad.UsuarioRepository;
