@@ -27,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String usuario) throws UsernameNotFoundException {
-        Optional<GdaUsuario> gdaUsuarioOptional = usuarioRepository.findByUsernameIgnoreCase(usuario);
+        Optional<GdaUsuario> gdaUsuarioOptional = usuarioRepository.findByNombreUsuarioIgnoreCase(usuario);
 
         if (!gdaUsuarioOptional.isPresent()) {
             gdaUsuarioOptional = usuarioRepository.findByEmailIgnoreCase(usuario);

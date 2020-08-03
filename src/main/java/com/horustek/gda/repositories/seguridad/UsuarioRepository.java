@@ -8,9 +8,9 @@ import java.util.Optional;
 
 @Repository
 public interface  UsuarioRepository extends JpaRepository<GdaUsuario, String> {
-    Optional <GdaUsuario> findByUsernameIgnoreCase(String username);
+    Optional <GdaUsuario> findByNombreUsuarioIgnoreCase(String username);
 
-    Boolean existsByUsernameIgnoreCase(String username);
+    Boolean existsByNombreUsuarioIgnoreCase(String username);
 
     Boolean existsByEmailIgnoreCase(String email);
 

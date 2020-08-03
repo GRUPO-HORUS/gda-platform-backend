@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 public abstract class Auditable implements Serializable {
 
 
-
     @CreatedBy
     @Column(updatable = false)
     protected String creadoPor;
