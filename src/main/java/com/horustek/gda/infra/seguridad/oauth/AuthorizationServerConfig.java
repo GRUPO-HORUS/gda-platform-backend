@@ -1,6 +1,7 @@
 package com.horustek.gda.infra.seguridad.oauth;
 
-import com.horustek.gda.infra.seguridad.jwt.CustomJwtAccessTokenConverter;
+import com.horustek.gda.infra.seguridad.jwt.InfoAdicionalToken;
+import com.horustek.gda.infra.seguridad.jwt.JwtConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +14,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
@@ -26,6 +26,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     private final BCryptPasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+
+    @Autowired
+    private InfoAdicionalToken infoAdicionalToken;
 
     @Value("${accessToken.time.expire.seconds}")
     private Integer accessTokenTimeExpireSeconds;
@@ -46,7 +49,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
-
     }
 
     /**
@@ -73,17 +75,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      * se lo entrega al usuario para que con este token se acceda a los recursos
      */
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(accessTokenConverter()));
+        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(infoAdicionalToken, accessTokenConverter()));
 
         endpoints.authenticationManager(authenticationManager)
                 .tokenStore(tokenStore())
                 .accessTokenConverter(accessTokenConverter())
-                .tokenEnhancer(tokenEnhancerChain)
-                /*.exceptionTranslator(loggingExceptionTranslator())*/;
-
+                .tokenEnhancer(tokenEnhancerChain);
     }
 
     @Bean
@@ -93,7 +92,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
-        return new CustomJwtAccessTokenConverter();
+        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+        jwtAccessTokenConverter.setSigningKey(JwtConfig.RSA_PRIVADA);
+        jwtAccessTokenConverter.setVerifierKey(JwtConfig.RSA_PUBLICA);
+        return jwtAccessTokenConverter;
     }
 
 //    @Bean

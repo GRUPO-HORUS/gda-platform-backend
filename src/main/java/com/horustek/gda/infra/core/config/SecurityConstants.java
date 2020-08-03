@@ -1,5 +1,15 @@
 package com.horustek.gda.infra.core.config;
 
+/**
+ * Clase que almacena las constantes de seguridad de la aplicación
+ *
+ *
+ * @author Alejandro Lafourcade
+ * @version 1.0
+ * date 31/07/2020
+ * copyright Grupo Horus
+ *
+ */
 public class SecurityConstants {
 
     public static final String ACTUATOR_URL = "/actuator/*";

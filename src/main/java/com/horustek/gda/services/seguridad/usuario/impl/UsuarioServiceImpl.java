@@ -2,8 +2,14 @@ package com.horustek.gda.services.seguridad.usuario.impl;
 
 import com.horustek.gda.model.domain.GdaUsuario;
 import com.horustek.gda.repositories.seguridad.UsuarioRepository;
+import com.horustek.gda.services.seguridad.usuario.UsuarioService;
+import com.horustek.gda.shared.dto.seguridad.GdaUsuarioDTO;
+import com.horustek.gda.shared.mapper.GdaUsuarioMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -20,9 +26,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
+    private final GdaUsuarioMapper gdaUsuarioMapper;
 
     @Override
     @Transactional(readOnly = true)
@@ -49,5 +56,18 @@ public class CustomUserDetailsService implements UserDetailsService {
                 true, true, true, authorities);
     }
 
+    @Override
+    public GdaUsuario obtenerPorNombreUsuario(String nombreUsuario) {
+        Optional<GdaUsuario> optionalGdaUsuario = usuarioRepository.findByNombreUsuarioIgnoreCase(nombreUsuario);
+        return optionalGdaUsuario.orElse(null);
+    }
+
+    @Override
+    public Page<GdaUsuarioDTO> findAll(Pageable pageable) {
+        Page<GdaUsuario> usuarioPage = usuarioRepository.findAll(pageable);
+        List<GdaUsuarioDTO> list = gdaUsuarioMapper
+                .toGdaUsuarioDTOs(usuarioPage.getContent());
+        return new PageImpl<>(list, pageable, usuarioPage.getTotalElements());
+    }
 }
 

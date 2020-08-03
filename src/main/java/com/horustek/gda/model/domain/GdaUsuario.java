@@ -34,7 +34,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 public class GdaUsuario extends Auditable {
 
-
     @Id
     @GeneratedValue(generator = "system-uuid-gda_rol")
     @GenericGenerator(name = "system-uuid-gda_rol", strategy = "uuid2")
