@@ -1,6 +1,7 @@
 package com.horustek.gda.infra.seguridad.oauth;
 
 import com.horustek.gda.infra.core.config.SecurityConstants;
+import com.horustek.gda.infra.exceptions.CustomAuthenticationEntryPoint;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -58,6 +61,19 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .and().cors().configurationSource(corsConfigurationSource());
 
 
+    }
+
+
+    @Override
+    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+        //This entrypoint is required for converting any auth exception into an ApiError
+        resources.authenticationEntryPoint(authenticationEntryPoint());
+    }
+
+    //This is required to give format to 401 exceptions
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return new CustomAuthenticationEntryPoint();
     }
 
     /**

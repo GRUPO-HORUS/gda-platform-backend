@@ -3,10 +3,12 @@ package com.horustek.gda.infra.core.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.horustek.gda.infra.utils.JsonUtils;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -21,13 +23,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 @Configuration
 @EnableAsync
 @EnableWebMvc
 @EnableAspectJAutoProxy
 @SuppressWarnings("serial")
 public class SpringCoreConfig implements WebMvcConfigurer {
+
+    @Bean
+    public MessageSource messageSource() {
+        ReloadableResourceBundleMessageSource messageSource
+                = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasenames("classpath:messages");
+        messageSource.setDefaultEncoding("UTF-8");
+        return messageSource;
+    }
 
     /**
      * Enable CORS DOMAIN for all public url

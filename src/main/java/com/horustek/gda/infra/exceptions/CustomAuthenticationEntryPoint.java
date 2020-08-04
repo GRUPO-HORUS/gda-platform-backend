@@ -1,6 +1,5 @@
 package com.horustek.gda.infra.exceptions;
-
-import com.homiefoo.platformbackend.core.utils.json.Util_Json;
+import com.horustek.gda.infra.utils.JsonUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -23,7 +22,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         try {
             httpServletResponse.getOutputStream()
-                    .println(Util_Json.toJSON(apiError));
+                    .println(JsonUtils.toJSON(apiError));
         } catch (IOException e1) {
             throw new RuntimeException(e1);
         }

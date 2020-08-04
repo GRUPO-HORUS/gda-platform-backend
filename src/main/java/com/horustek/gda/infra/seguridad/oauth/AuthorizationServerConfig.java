@@ -1,5 +1,6 @@
 package com.horustek.gda.infra.seguridad.oauth;
 
+import com.horustek.gda.infra.exceptions.ApiError;
 import com.horustek.gda.infra.seguridad.jwt.InfoAdicionalToken;
 import com.horustek.gda.infra.seguridad.jwt.JwtConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -14,6 +17,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
@@ -26,9 +30,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     private final BCryptPasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-
-    @Autowired
-    private InfoAdicionalToken infoAdicionalToken;
 
     @Value("${accessToken.time.expire.seconds}")
     private Integer accessTokenTimeExpireSeconds;
@@ -75,14 +76,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      * se lo entrega al usuario para que con este token se acceda a los recursos
      */
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+
         TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(infoAdicionalToken, accessTokenConverter()));
+        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(accessTokenConverter()));
 
         endpoints.authenticationManager(authenticationManager)
                 .tokenStore(tokenStore())
                 .accessTokenConverter(accessTokenConverter())
-                .tokenEnhancer(tokenEnhancerChain);
+                .tokenEnhancer(tokenEnhancerChain)
+                .exceptionTranslator(loggingExceptionTranslator());
+
     }
 
     @Bean
@@ -98,20 +102,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return jwtAccessTokenConverter;
     }
 
-//    @Bean
-//    public WebResponseExceptionTranslator loggingExceptionTranslator() {
-//        return new WebResponseExceptionTranslator() {
-//            @Override
-//            public ResponseEntity<?> translate(Exception e) throws Exception {
-//                // Carry on handling the exception
-//                ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED);
-//                apiError.setMessage(e.getMessage());
-//                apiError.setDebugMessage(e.getMessage());
-//                apiError.setTokenExpired(e.getMessage().startsWith("Access token expired"));
-//                return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
-//            }
-//        };
-//    }
+    @Bean
+    public WebResponseExceptionTranslator loggingExceptionTranslator() {
+        return e -> {
+            // Carry on handling the exception
+            ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED);
+            apiError.setMessage(e.getMessage());
+            apiError.setDebugMessage(e.getMessage());
+            apiError.setTokenExpired(e.getMessage().startsWith("Access token expired"));
+            return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
+        };
+    }
 
 
 }
