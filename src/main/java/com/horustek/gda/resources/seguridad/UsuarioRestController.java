@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/auth/users")
+@RequestMapping("/auth/usuarios")
 public class UsuarioRestController {
     private final UsuarioService usuarioService;
 
