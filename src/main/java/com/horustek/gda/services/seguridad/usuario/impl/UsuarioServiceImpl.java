@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -59,9 +60,9 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
     }
 
     @Override
-    public GdaUsuario obtenerPorNombreUsuario(String nombreUsuario) {
-        Optional<GdaUsuario> optionalGdaUsuario = usuarioRepository.findByNombreUsuarioIgnoreCase(nombreUsuario);
-        return optionalGdaUsuario.orElse(null);
+    public GdaUsuarioDTO findByUsername(String nombreUsuario) {
+        Optional<GdaUsuario> gdaUsuario = usuarioRepository.findByNombreUsuarioIgnoreCase(nombreUsuario);
+        return gdaUsuario.map(gdaUsuarioMapper::toGdaUsuarioDTO).orElse(null);
     }
 
     @Override

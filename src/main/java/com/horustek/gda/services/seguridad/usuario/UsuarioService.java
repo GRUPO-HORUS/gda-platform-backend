@@ -1,14 +1,21 @@
 package com.horustek.gda.services.seguridad.usuario;
 
-import com.horustek.gda.model.domain.GdaUsuario;
+import com.horustek.gda.infra.validation.ExistsUserByUsername;
 import com.horustek.gda.shared.dto.seguridad.GdaUsuarioDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
 
-
+@Validated
 public interface UsuarioService {
 
-    GdaUsuario obtenerPorNombreUsuario(String nombreUsuario);
+    /**
+     * Encontrar Usuario por nombre de usuario
+     *
+     * @param nombreUsuario Nombre de Usuario
+     * @return Homiefoo User
+     */
+    GdaUsuarioDTO findByUsername(@ExistsUserByUsername String nombreUsuario);
 
     /**
      * Obtener todos los Usuarios del sistema
@@ -17,4 +24,6 @@ public interface UsuarioService {
      * @return Listado paginado de todos los usuarios
      */
     Page<GdaUsuarioDTO> findAll(Pageable pageable);
+
+
 }
