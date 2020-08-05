@@ -1,6 +1,8 @@
 package com.horustek.gda.infra.auditoria;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -24,7 +26,8 @@ import java.time.LocalDateTime;
  *
  */
 
-@Data
+@Getter
+@SuperBuilder
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class Auditable implements Serializable {
