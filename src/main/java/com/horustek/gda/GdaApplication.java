@@ -5,9 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class GdaApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(GdaApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(GdaApplication.class, args);
+    }
 }
