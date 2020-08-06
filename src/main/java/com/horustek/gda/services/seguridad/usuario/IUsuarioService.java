@@ -11,7 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 
 @Validated
-public interface UsuarioService {
+public interface IUsuarioService {
 
     /**
      * Encontrar Usuario por nombre de usuario

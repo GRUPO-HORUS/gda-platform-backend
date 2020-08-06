@@ -14,10 +14,14 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "gda_roles")
 @Getter
 @SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = GdaRol.class)
 public class GdaRol extends Auditable {
 
@@ -31,4 +35,17 @@ public class GdaRol extends Auditable {
     @Column(unique = true, length = 20)
     private String nombre;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GdaRol gdaRol = (GdaRol) o;
+        return id.equals(gdaRol.id) &&
+                nombre.equals(gdaRol.nombre);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nombre);
+    }
 }

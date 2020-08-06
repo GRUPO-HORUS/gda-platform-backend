@@ -1,28 +1,26 @@
 package com.horustek.gda.resources.seguridad;
 
-import com.horustek.gda.services.seguridad.usuario.UsuarioService;
+import com.horustek.gda.services.seguridad.usuario.IUsuarioService;
 import com.horustek.gda.shared.dto.seguridad.GdaUsuarioDTO;
 import com.horustek.gda.shared.dto.seguridad.RegistroDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.implementation.bind.annotation.BindingPriority;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.security.Principal;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth/usuarios")
 public class UsuarioRestController {
-    private final UsuarioService usuarioService;
+    private final IUsuarioService usuarioService;
 
     @GetMapping
     public ResponseEntity<?> getAllUsers(@NotNull Pageable pageable) {

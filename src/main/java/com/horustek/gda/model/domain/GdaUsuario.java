@@ -26,6 +26,8 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "gda_usuarios")
 @Getter
 @SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = GdaUsuario.class)
 public class GdaUsuario extends Auditable {
 
@@ -49,7 +51,7 @@ public class GdaUsuario extends Auditable {
     @Column(unique = true)
     private String email;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.DETACH})
     @JoinTable(name = "gda_usuarios_roles", joinColumns = @JoinColumn(name = "gda_usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "gda_role_id"),
             uniqueConstraints = {@UniqueConstraint(columnNames = {"gda_usuario_id", "gda_role_id"})})

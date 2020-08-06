@@ -2,16 +2,16 @@ package com.horustek.gda.services.seguridad.usuario.impl;
 
 import com.horustek.gda.infra.exceptions.BusinessException;
 import com.horustek.gda.infra.exceptions.ErrorCodesEnum;
+import com.horustek.gda.model.domain.GdaRol;
 import com.horustek.gda.model.domain.GdaUsuario;
+import com.horustek.gda.repositories.seguridad.RolRepository;
 import com.horustek.gda.repositories.seguridad.UsuarioRepository;
-import com.horustek.gda.services.seguridad.usuario.UsuarioService;
+import com.horustek.gda.services.seguridad.usuario.IUsuarioService;
 import com.horustek.gda.shared.dto.seguridad.GdaUsuarioDTO;
 import com.horustek.gda.shared.dto.seguridad.RegistroDTO;
 import com.horustek.gda.shared.mapper.GdaUsuarioMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,11 +35,11 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
+public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
+    private final RolRepository rolRepository;
     private final GdaUsuarioMapper gdaUsuarioMapper;
-    @Qualifier("encoder")
     private final PasswordEncoder encoder;
 
     @Override
@@ -96,6 +97,16 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
             throw new BusinessException(ErrorCodesEnum.GDA_ERR_04, registroDTO.getNombreUsuario());
         }
 
+        // Verificar todos los roles que se le quieren asignar al usuario
+        List<GdaRol> rolesAAsignar = registroDTO.getRoles();
+        List<GdaRol> systemRols = rolRepository.findAll();
+        List<GdaRol> rolesAsignados = rolesAAsignar.stream()
+                .filter(systemRols::contains).collect(Collectors.toList());
+
+        if (rolesAsignados.isEmpty())
+            throw new BusinessException(ErrorCodesEnum.GDA_ERR_05);
+
+
         // Crear una cuenta de usuario
         //El email siempre es almacenado con minúscula
         GdaUsuario nuevoUsuario = GdaUsuario.builder()
@@ -103,7 +114,8 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
                 .nombreUsuario(registroDTO.getNombreUsuario())
                 .credencial(encoder.encode(registroDTO.getCredencial()))
                 .fechaCreacion(LocalDateTime.now())
-                .roles(registroDTO.getRoles())
+                .enabled(true)
+                .roles(rolesAsignados)
                 .build();
         usuarioRepository.save(nuevoUsuario);
     }

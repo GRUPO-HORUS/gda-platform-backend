@@ -1,6 +1,6 @@
 package com.horustek.gda.infra.seguridad.jwt;
 
-import com.horustek.gda.services.seguridad.usuario.UsuarioService;
+import com.horustek.gda.services.seguridad.usuario.IUsuarioService;
 import com.horustek.gda.shared.dto.seguridad.GdaUsuarioDTO;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -14,9 +14,9 @@ import java.util.Map;
 @Component
 public class InfoAdicionalToken implements TokenEnhancer {
 
-    private final UsuarioService usuarioService;
+    private final IUsuarioService usuarioService;
 
-    public InfoAdicionalToken(UsuarioService usuarioService) {
+    public InfoAdicionalToken(IUsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
 
