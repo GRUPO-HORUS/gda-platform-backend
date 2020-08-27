@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import javax.persistence.*;
 
   /**
@@ -29,37 +29,25 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table(name = "gda_roles")
+@Table(name = "gda_tipo_unidad")
 @Getter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = GdaRol.class)
-public class GdaRol extends Auditable {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = GdaTipoUnidad.class)
+public class GdaTipoUnidad extends Auditable {
 
     @Id
-    @GeneratedValue(generator = "system-uuid-gda_rol")
-    @GenericGenerator(name = "system-uuid-gda_rol", strategy = "uuid2")
+    @GeneratedValue(generator = "system-uuid-gda_tipo_unidad")
+    @GenericGenerator(name = "system-uuid-gda_tipo_unidad", strategy = "uuid2")
     @Basic(optional = false)
     @Column(name = "id")
     private String id;
     @Basic(optional = false)
-    @Column(name = "nombre")
-    private String nombre;
+    @Column(name = "descripcion")
+    private String descripcion;
     @Basic(optional = false)
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        GdaRol gdaRol = (GdaRol) o;
-        return id.equals(gdaRol.id) &&
-                nombre.equals(gdaRol.nombre);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nombre);
-    }
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaTipoUnidadId")
+    private List<GdaUnidad> gdaUnidadList;
 
 }

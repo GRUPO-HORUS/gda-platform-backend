@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import javax.persistence.*;
 
   /**
@@ -29,37 +29,26 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table(name = "gda_roles")
+@Table(name = "gda_solicitud_mov_ruta_aprobacion")
 @Getter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = GdaRol.class)
-public class GdaRol extends Auditable {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = GdaSolicitudMovRutaAprobacion.class)
+public class GdaSolicitudMovRutaAprobacion extends Auditable {
 
     @Id
-    @GeneratedValue(generator = "system-uuid-gda_rol")
-    @GenericGenerator(name = "system-uuid-gda_rol", strategy = "uuid2")
+    @GeneratedValue(generator = "system-uuid-gda_solicitud_mov_ruta_aprobacion")
+    @GenericGenerator(name = "system-uuid-gda_solicitud_mov_ruta_aprobacion", strategy = "uuid2")
     @Basic(optional = false)
     @Column(name = "id")
     private String id;
+    @Column(name = "gda_solicitud_mov_biengda_origen_movimientoid")
+    private String gdaSolicitudMovBiengdaOrigenMovimientoid;
     @Basic(optional = false)
-    @Column(name = "nombre")
-    private String nombre;
-    @Basic(optional = false)
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        GdaRol gdaRol = (GdaRol) o;
-        return id.equals(gdaRol.id) &&
-                nombre.equals(gdaRol.nombre);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nombre);
-    }
-
+    @JoinColumn(name = "gda_solicitud_mov_bien_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private GdaSolicitudMovBien gdaSolicitudMovBienId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaSolicitudMovRutaAprobacionid")
+    private List<GdaSolicitudMovPasoRuta> gdaSolicitudMovPasoRutaList;
 }
