@@ -2,7 +2,6 @@ package com.horustek.gda.shared.dto.seguridad;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import com.horustek.gda.model.domain.GdaRol;

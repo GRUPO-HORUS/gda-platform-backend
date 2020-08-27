@@ -3,6 +3,7 @@ package com.horustek.gda.resources.seguridad;
 import com.horustek.gda.services.seguridad.usuario.IUsuarioService;
 import com.horustek.gda.shared.dto.seguridad.GdaUsuarioDTO;
 import com.horustek.gda.shared.dto.seguridad.RegistroDTO;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,7 @@ public class UsuarioRestController {
     private final IUsuarioService usuarioService;
 
     @GetMapping
+    @Timed("gda.metrics.getAllUsers")
     public ResponseEntity<?> getAllUsers(@NotNull Pageable pageable) {
         Page<GdaUsuarioDTO> usuariosDTOS = usuarioService.findAll(pageable);
         return new ResponseEntity<>(usuariosDTOS, HttpStatus.OK);

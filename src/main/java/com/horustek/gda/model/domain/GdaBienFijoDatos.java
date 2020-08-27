@@ -14,12 +14,11 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-import java.util.Objects;
 import javax.persistence.*;
 
-  /**
+/**
  * Entidad Mapeada de la Base de Datos
  *
  * @author Alejandro Lafourcade
@@ -29,37 +28,29 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table(name = "gda_roles")
+@Table(name = "gda_bien_fijo_datos")
 @Getter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = GdaRol.class)
-public class GdaRol extends Auditable {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = GdaBienFijoDatos.class)
+public class GdaBienFijoDatos extends Auditable {
 
     @Id
-    @GeneratedValue(generator = "system-uuid-gda_rol")
-    @GenericGenerator(name = "system-uuid-gda_rol", strategy = "uuid2")
+    @GeneratedValue(generator = "system-uuid-gda_bien_fijo_datos")
+    @GenericGenerator(name = "system-uuid-gda_bien_fijo_datos", strategy = "uuid2")
     @Basic(optional = false)
     @Column(name = "id")
     private String id;
     @Basic(optional = false)
-    @Column(name = "nombre")
-    private String nombre;
+    @Column(name = "valor")
+    private String valor;
     @Basic(optional = false)
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        GdaRol gdaRol = (GdaRol) o;
-        return id.equals(gdaRol.id) &&
-                nombre.equals(gdaRol.nombre);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nombre);
-    }
+    @JoinColumn(name = "gda_atributo_categoria_bien_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private GdaAtributoCategoriaBien gdaAtributoCategoriaBienId;
+    @JoinColumn(name = "gda_bien_fijo_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private GdaBien gdaBienFijoId;
 
 }

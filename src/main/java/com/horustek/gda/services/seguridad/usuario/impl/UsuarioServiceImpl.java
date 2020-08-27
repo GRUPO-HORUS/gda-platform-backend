@@ -2,6 +2,9 @@ package com.horustek.gda.services.seguridad.usuario.impl;
 
 import com.horustek.gda.infra.exceptions.BusinessException;
 import com.horustek.gda.infra.exceptions.ErrorCodesEnum;
+import com.horustek.gda.infra.model.BaseSpecification;
+import com.horustek.gda.infra.model.SearchCriteria;
+import com.horustek.gda.infra.model.SearchOperation;
 import com.horustek.gda.model.domain.GdaRol;
 import com.horustek.gda.model.domain.GdaUsuario;
 import com.horustek.gda.repositories.seguridad.RolRepository;
@@ -27,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -63,7 +65,7 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
                 .map(rol -> new SimpleGrantedAuthority(rol.getNombre()))
                 .collect(Collectors.toList());
 
-        return new User(usuarioBD.getNombreUsuario(), usuarioBD.getCredencial(), usuarioBD.getEnabled(),
+        return new User(usuarioBD.getNombreUsuario(), usuarioBD.getCredencial(), usuarioBD.isEnabled(),
                 true, true, true, authorities);
     }
 
@@ -75,7 +77,11 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 
     @Override
     public Page<GdaUsuarioDTO> findAll(Pageable pageable) {
-        Page<GdaUsuario> usuarioPage = usuarioRepository.findAll(pageable);
+
+        BaseSpecification<GdaUsuario> specification = new BaseSpecification<>();
+        specification.add(new SearchCriteria("nombreUsuario", "alafourcade", SearchOperation.EQUAL));
+
+        Page<GdaUsuario> usuarioPage = usuarioRepository.findAll(specification, pageable);
         List<GdaUsuarioDTO> list = gdaUsuarioMapper
                 .toGdaUsuarioDTOs(usuarioPage.getContent());
         return new PageImpl<>(list, pageable, usuarioPage.getTotalElements());
