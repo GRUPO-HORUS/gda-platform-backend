@@ -45,6 +45,8 @@ public class GdaSolictudMovBienEspefico extends Auditable {
     @JoinColumn(name = "gda_bien_fijoid", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private GdaBien gdaBienFijoid;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "gda_solicitud_mov_bien_id")
     @MapsId
     private GdaSolicitudMovBien gdaSolicitudMovBien;
 }

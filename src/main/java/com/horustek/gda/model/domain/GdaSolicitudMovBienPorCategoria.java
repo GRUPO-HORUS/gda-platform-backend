@@ -40,7 +40,6 @@ public class GdaSolicitudMovBienPorCategoria extends Auditable {
     @Column(name = "gda_solicitud_mov_bien_id")
     private String id;
 
-
     @Basic(optional = false)
     @Column(name = "gda_solicitud_mov_biengda_origen_movimientoid")
     private String gdaSolicitudMovBiengdaOrigenMovimientoid;
@@ -49,7 +48,14 @@ public class GdaSolicitudMovBienPorCategoria extends Auditable {
     @JoinColumn(name = "gda_categoria_bien_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private GdaCategoriaBien gdaCategoriaBienId;
+
+
+      @OneToOne(cascade = CascadeType.ALL)
+      @JoinColumn(name = "gda_solicitud_mov_bien_id")
       @MapsId
       private GdaSolicitudMovBien gdaSolicitudMovBien;
+
+
+
 
 }
