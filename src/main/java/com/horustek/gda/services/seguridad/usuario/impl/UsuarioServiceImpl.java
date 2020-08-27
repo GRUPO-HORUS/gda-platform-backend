@@ -48,7 +48,8 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String usuario) throws UsernameNotFoundException {
         Optional<GdaUsuario> gdaUsuarioOptional = usuarioRepository.findByNombreUsuarioIgnoreCase(usuario);
-
+        // Se trata de encontrar a un usuario tanto por email como por nombre de usuario , en caso de que
+        // no exista se notifica al cliente
         if (!gdaUsuarioOptional.isPresent()) {
             gdaUsuarioOptional = usuarioRepository.findByEmailIgnoreCase(usuario);
             if (!gdaUsuarioOptional.isPresent()) {
@@ -59,11 +60,12 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
         }
 
         GdaUsuario usuarioBD = gdaUsuarioOptional.get();
-
+        // Se buscan los roles asociados al usuario
         List<GrantedAuthority> authorities = usuarioBD.getRoles()
                 .stream()
                 .map(rol -> new SimpleGrantedAuthority(rol.getNombre()))
                 .collect(Collectors.toList());
+
 
         return new User(usuarioBD.getNombreUsuario(), usuarioBD.getCredencial(), usuarioBD.isEnabled(),
                 true, true, true, authorities);
@@ -96,6 +98,7 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
     @Transactional
     @Override
     public void register(@Valid RegistroDTO registroDTO) {
+        // Si hay un usuario con ese nombre de usuario u otro email, no debería permitir registrarse
         if (usuarioRepository.existsByEmailIgnoreCase(registroDTO.getEmail())) {
             throw new BusinessException(ErrorCodesEnum.GDA_ERR_03, registroDTO.getEmail());
         }
@@ -119,8 +122,13 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
                 .email(registroDTO.getEmail().toLowerCase())
                 .nombreUsuario(registroDTO.getNombreUsuario())
                 .credencial(encoder.encode(registroDTO.getCredencial()))
+                .nombre(registroDTO.getNombre())
+                .apellidos(registroDTO.getApellidos())
+                .cedula(registroDTO.getCedula())
+                .telefono(registroDTO.getTelefono())
+                .celular(registroDTO.getCelular())
                 .fechaCreacion(LocalDateTime.now())
-                .enabled(true)
+                .enabled(Boolean.TRUE)
                 .roles(rolesAsignados)
                 .build();
         usuarioRepository.save(nuevoUsuario);

@@ -28,6 +28,11 @@ public class RegistroDTO {
     @Length(min = 6, max = 60, message = "GDA_ERR_02")
     private String credencial;
     private String nombre;
+    private String apellidos;
+    private String cedula;
+    private String telefono;
+    private String celular;
+    private boolean enabled;
     private List<GdaRol> roles;
 }
 
