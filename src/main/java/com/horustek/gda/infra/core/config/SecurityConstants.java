@@ -15,6 +15,6 @@ public class SecurityConstants {
     public static final String ACTUATOR_URL = "/actuator/**";
     public static final String SWAGGER_URL = "/swagger-ui.html/**";
     public static final String PUBLIC_URL_MATCHER = "/**/public";
-    public static final String SIGNUP_URL = "/**/signup";
+    public static final String SIGNUP_URL = "/**/registro";
 }
 

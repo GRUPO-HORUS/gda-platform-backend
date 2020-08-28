@@ -29,7 +29,7 @@ import javax.persistence.*;
  * copyright Grupo Horus
  */
 @Entity
-@Table(name = "gda_usuarios")
+@Table(name = "gda_usuario")
 @Getter
 @SuperBuilder
 @NoArgsConstructor
@@ -73,9 +73,9 @@ public class GdaUsuario extends Auditable {
     @Basic(optional = false)
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.DETACH})
-    @JoinTable(name = "gda_usuarios_roles", joinColumns = @JoinColumn(name = "gda_usuario_id"),
-            inverseJoinColumns = @JoinColumn(name = "gda_role_id"),
-            uniqueConstraints = {@UniqueConstraint(columnNames = {"gda_usuario_id", "gda_role_id"})})
+    @JoinTable(name = "gda_usuario_roles", joinColumns = @JoinColumn(name = "gda_usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "gda_roles_id"),
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"gda_usuario_id", "gda_roles_id"})})
     private List<GdaRol> roles;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaUsuarioId")
     private List<GdaSolicitudMovPasoRutaParticipantes> gdaSolicitudMovPasoRutaParticipantesList;

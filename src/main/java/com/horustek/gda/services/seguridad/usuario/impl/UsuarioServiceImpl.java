@@ -80,10 +80,7 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
     @Override
     public Page<GdaUsuarioDTO> findAll(Pageable pageable) {
 
-        BaseSpecification<GdaUsuario> specification = new BaseSpecification<>();
-        specification.add(new SearchCriteria("nombreUsuario", "alafourcade", SearchOperation.EQUAL));
-
-        Page<GdaUsuario> usuarioPage = usuarioRepository.findAll(specification, pageable);
+        Page<GdaUsuario> usuarioPage = usuarioRepository.findAll(pageable);
         List<GdaUsuarioDTO> list = gdaUsuarioMapper
                 .toGdaUsuarioDTOs(usuarioPage.getContent());
         return new PageImpl<>(list, pageable, usuarioPage.getTotalElements());

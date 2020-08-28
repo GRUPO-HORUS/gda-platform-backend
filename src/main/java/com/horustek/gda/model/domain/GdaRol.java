@@ -53,8 +53,7 @@ public class GdaRol extends Auditable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GdaRol gdaRol = (GdaRol) o;
-        return id.equals(gdaRol.id) &&
-                nombre.equals(gdaRol.nombre);
+        return id.trim().equals(gdaRol.id.trim());
     }
 
     @Override
