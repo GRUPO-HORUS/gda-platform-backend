@@ -38,8 +38,8 @@ import javax.persistence.*;
 public class GdaUsuario extends Auditable {
 
     @Id
-    @GeneratedValue(generator = "system-uuid-gda_rol")
-    @GenericGenerator(name = "system-uuid-gda_rol", strategy = "uuid2")
+    @GeneratedValue(generator = "system-uuid-gda_usuario")
+    @GenericGenerator(name = "system-uuid-gda_usuario", strategy = "uuid2")
     @Basic(optional = false)
     @Column(name = "id")
     private String id;
