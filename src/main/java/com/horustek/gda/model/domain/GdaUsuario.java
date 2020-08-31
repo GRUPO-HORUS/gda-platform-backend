@@ -72,7 +72,7 @@ public class GdaUsuario extends Auditable {
     private boolean enabled;
     @Basic(optional = false)
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.DETACH})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.DETACH})
     @JoinTable(name = "gda_usuario_roles", joinColumns = @JoinColumn(name = "gda_usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "gda_roles_id"),
             uniqueConstraints = {@UniqueConstraint(columnNames = {"gda_usuario_id", "gda_roles_id"})})

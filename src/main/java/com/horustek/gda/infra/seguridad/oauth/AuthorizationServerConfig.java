@@ -30,6 +30,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     private final BCryptPasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final InfoAdicionalToken infoAdicionalToken;
 
     @Value("${accessToken.time.expire.seconds}")
     private Integer accessTokenTimeExpireSeconds;
@@ -45,11 +46,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 
     @Autowired
-    public AuthorizationServerConfig(BCryptPasswordEncoder passwordEncoder,
+    public AuthorizationServerConfig(BCryptPasswordEncoder passwordEncoder, InfoAdicionalToken infoAdicionalToken,
                                      @Qualifier("authenticationManager") AuthenticationManager authenticationManager) {
 
         this.passwordEncoder = passwordEncoder;
+        this.infoAdicionalToken = infoAdicionalToken;
         this.authenticationManager = authenticationManager;
+
     }
 
     /**
@@ -79,7 +82,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
 
         TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(accessTokenConverter()));
+        tokenEnhancerChain.setTokenEnhancers(Arrays.asList(infoAdicionalToken, accessTokenConverter()));
 
         endpoints.authenticationManager(authenticationManager)
                 .tokenStore(tokenStore())
