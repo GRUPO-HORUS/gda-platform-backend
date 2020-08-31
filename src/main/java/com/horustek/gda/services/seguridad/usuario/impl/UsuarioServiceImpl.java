@@ -2,9 +2,6 @@ package com.horustek.gda.services.seguridad.usuario.impl;
 
 import com.horustek.gda.infra.exceptions.BusinessException;
 import com.horustek.gda.infra.exceptions.ErrorCodesEnum;
-import com.horustek.gda.infra.model.BaseSpecification;
-import com.horustek.gda.infra.model.SearchCriteria;
-import com.horustek.gda.infra.model.SearchOperation;
 import com.horustek.gda.model.domain.GdaRol;
 import com.horustek.gda.model.domain.GdaUsuario;
 import com.horustek.gda.repositories.seguridad.RolRepository;
@@ -12,7 +9,7 @@ import com.horustek.gda.repositories.seguridad.UsuarioRepository;
 import com.horustek.gda.services.seguridad.usuario.IUsuarioService;
 import com.horustek.gda.shared.dto.seguridad.GdaUsuarioDTO;
 import com.horustek.gda.shared.dto.seguridad.RegistroDTO;
-import com.horustek.gda.shared.mapper.GdaUsuarioMapper;
+import com.horustek.gda.shared.mapper.seguridad.GdaUsuarioMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -103,14 +100,18 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
             throw new BusinessException(ErrorCodesEnum.GDA_ERR_04, registroDTO.getNombreUsuario());
         }
 
-        // Verificar todos los roles que se le quieren asignar al usuario
-        List<GdaRol> rolesAAsignar = registroDTO.getRoles();
-        List<GdaRol> systemRols = rolRepository.findAll();
-        List<GdaRol> rolesAsignados = rolesAAsignar.stream()
-                .filter(systemRols::contains).collect(Collectors.toList());
+        //TODO revisar el tema de los roles
 
-        if (rolesAsignados.isEmpty())
-            throw new BusinessException(ErrorCodesEnum.GDA_ERR_05);
+//
+//
+//        // Verificar todos los roles que se le quieren asignar al usuario
+//        List<GdaRol> rolesAAsignar = registroDTO.getRoles();
+//        List<GdaRol> systemRols = rolRepository.findAll();
+//        List<GdaRol> rolesAsignados = rolesAAsignar.stream()
+//                .filter(systemRols::contains).collect(Collectors.toList());
+//
+//        if (rolesAsignados.isEmpty())
+//            throw new BusinessException(ErrorCodesEnum.GDA_ERR_05);
 
 
         // Crear una cuenta de usuario
@@ -126,7 +127,6 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
                 .celular(registroDTO.getCelular())
                 .fechaCreacion(LocalDateTime.now())
                 .enabled(Boolean.TRUE)
-                .roles(rolesAsignados)
                 .build();
         usuarioRepository.save(nuevoUsuario);
     }
