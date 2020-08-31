@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/gestionEntidades/entidad")
-public class EntidadesRestController {
+public class EntidadRestController {
 
     private final IGestionEntidadesService gestionEntidadesService;
 
