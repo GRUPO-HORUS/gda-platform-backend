@@ -1,4 +1,4 @@
-package com.horustek.gda.repositories.gestionEntidades;
+package com.horustek.gda.repositories.gestionentidades;
 
 import com.horustek.gda.model.domain.GdaTipoUnidad;
 import org.springframework.data.jpa.repository.JpaRepository;

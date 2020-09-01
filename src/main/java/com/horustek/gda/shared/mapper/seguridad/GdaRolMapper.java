@@ -1,4 +1,4 @@
-package com.horustek.gda.shared.mapper;
+package com.horustek.gda.shared.mapper.seguridad;
 
 import com.horustek.gda.model.domain.GdaRol;
 import com.horustek.gda.shared.dto.seguridad.GdaRolDTO;

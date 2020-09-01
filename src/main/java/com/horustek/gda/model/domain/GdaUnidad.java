@@ -19,14 +19,13 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
-  /**
+/**
  * Entidad Mapeada de la Base de Datos
  *
  * @author Alejandro Lafourcade
  * @version 1.0
  * date 08/2020
  * copyright Grupo Horus
- *
  */
 @Entity
 @Table(name = "gda_unidad")
@@ -43,6 +42,9 @@ public class GdaUnidad extends Auditable {
     @Basic(optional = false)
     @Column(name = "id")
     private String id;
+    @Basic(optional = false)
+    @Column(name = "nombre")
+    private String nombre;
     @Basic(optional = false)
     @JoinColumn(name = "gda_entidad_id", referencedColumnName = "id")
     @ManyToOne(optional = false)

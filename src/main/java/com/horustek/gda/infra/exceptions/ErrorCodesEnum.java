@@ -9,4 +9,6 @@ public enum ErrorCodesEnum {
     GDA_ERR_05,
     GDA_ERR_06,
     GDA_ERR_07,
+    GDA_ERR_08,
+    GDA_ERR_09,
 }

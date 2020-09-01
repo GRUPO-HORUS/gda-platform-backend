@@ -1,9 +1,11 @@
-package com.horustek.gda.repositories.gestionEntidades;
+package com.horustek.gda.repositories.gestionentidades;
 
 import com.horustek.gda.model.domain.GdaEntidad;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface EntidadRepository extends JpaRepository<GdaEntidad, String> {
 
-    Boolean findByNombre(String nombre);
+    Optional<GdaEntidad> findByNombre(String nombre);
 }

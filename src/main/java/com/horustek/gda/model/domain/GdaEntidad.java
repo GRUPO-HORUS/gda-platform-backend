@@ -47,7 +47,6 @@ public class GdaEntidad extends Auditable {
     @Column(name = "nombre")
     private String nombre;
     @Basic(optional = false)
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaEntidadId")
     private List<GdaUnidad> gdaUnidadList;
 
