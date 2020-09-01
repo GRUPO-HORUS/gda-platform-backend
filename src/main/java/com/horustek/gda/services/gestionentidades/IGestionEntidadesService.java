@@ -35,6 +35,12 @@ public interface IGestionEntidadesService {
     List<GdaUnidadDTO> listadoUnidadesDadoNombreEntidad(String nombreEntidad);
 
     /**
+     * Este método se encarga de asignar a un listado de entidades, una unidad padre
+     * @param nombre Nombre de la entidad de la cual se desea conocer sus unidades
+     */
+    void asignarUnidadPadreAListadoDeUnidades(GdaUnidadDTO unidadPadreDTO, List<GdaUnidadDTO> unidades);
+
+    /**
      * Crear una unidad
      * @param unidadDTO Objeto con los datos de la unidad a insertar
      */
