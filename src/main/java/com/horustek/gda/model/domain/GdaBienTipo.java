@@ -28,16 +28,5 @@ public class GdaBienTipo extends Auditable {
     @Basic(optional = false)
     @Column(name = "descripcion")
     private String descripcion;
-    @Basic(optional = false)
-    @Column(name = "creado_por")
-    private String creadoPor;
-    @Basic(optional = false)
-    @Column(name = "fecha_creacion")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaCreacion;
-    @Column(name = "fecha_modificacion")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaModificacion;
-    @Column(name = "modificado_por")
-    private String modificadoPor;
+
 }

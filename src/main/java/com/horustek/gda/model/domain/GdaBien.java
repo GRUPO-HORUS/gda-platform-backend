@@ -56,7 +56,6 @@ public class GdaBien extends Auditable {
     @Column(name = "valor_incorporacion")
     private double valorIncorporacion;
     @Basic(optional = false)
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaBienId")
     private List<GdaBienTraza> gdaBienTrazaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaBienFijoId")
