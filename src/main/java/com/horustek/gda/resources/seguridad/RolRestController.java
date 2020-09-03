@@ -3,6 +3,7 @@ package com.horustek.gda.resources.seguridad;
 import com.horustek.gda.GdaApplication;
 import com.horustek.gda.services.seguridad.usuario.IRolService;
 import com.horustek.gda.services.seguridad.usuario.IUsuarioService;
+import com.horustek.gda.shared.dto.seguridad.AsignarRolesDTO;
 import com.horustek.gda.shared.dto.seguridad.GdaRolDTO;
 import com.horustek.gda.shared.dto.seguridad.GdaUsuarioDTO;
 import com.horustek.gda.shared.dto.seguridad.RegistroDTO;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,5 +32,12 @@ public class RolRestController {
         Page<GdaRolDTO> rolDTOS = rolService.findAll(pageable);
         return new ResponseEntity<>(rolDTOS, HttpStatus.OK);
     }
+
+    @PutMapping("/asignar")
+    public ResponseEntity<?> asignarRolesAUsuario(@RequestBody AsignarRolesDTO asignarRolesDTO) {
+        rolService.asignarRolesAUsuario(asignarRolesDTO.getId(), asignarRolesDTO.getRoles());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 
 }

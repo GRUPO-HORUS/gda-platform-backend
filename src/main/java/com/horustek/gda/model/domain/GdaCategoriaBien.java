@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.horustek.gda.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -46,7 +41,9 @@ public class GdaCategoriaBien extends Auditable {
     @Column(name = "descripcion")
     private String descripcion;
     @Basic(optional = false)
-
+    @Column(name = "codigo")
+    private String codigo;
+    @Basic(optional = false)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaCategoriaBienId")
     private List<GdaAtributoCategoriaBien> gdaAtributoCategoriaBienList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaCategoriaBienId")
@@ -58,5 +55,4 @@ public class GdaCategoriaBien extends Auditable {
     private List<GdaSolicitudMovBienPorCategoria> gdaSolicitudMovBienPorCategoriaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaCategoriaBienId")
     private List<GdaBien> gdaBienList;
-
 }

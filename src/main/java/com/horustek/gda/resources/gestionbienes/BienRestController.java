@@ -1,4 +1,4 @@
-package com.horustek.gda.resources.bien;
+package com.horustek.gda.resources.gestionbienes;
 
 import com.horustek.gda.services.seguridad.usuario.IUsuarioService;
 import com.horustek.gda.shared.dto.seguridad.GdaUsuarioDTO;

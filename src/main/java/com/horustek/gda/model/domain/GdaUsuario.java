@@ -11,6 +11,7 @@ import com.horustek.gda.infra.auditoria.Auditable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -31,6 +32,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "gda_usuario")
 @Getter
+@Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -80,7 +82,7 @@ public class GdaUsuario extends Auditable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaUsuarioId")
     private List<GdaSolicitudMovPasoRutaParticipantes> gdaSolicitudMovPasoRutaParticipantesList;
     @JoinColumn(name = "gda_unidad_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaUnidad gdaUnidadId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaUsuarioCreadorId")
     private List<GdaSolicitudMovBien> gdaSolicitudMovBienList;
@@ -88,5 +90,7 @@ public class GdaUsuario extends Auditable {
     private List<GdaSolicitudMovBien> gdaSolicitudMovBienList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaUsuarioResponsableId")
     private List<GdaBien> gdaBienList;
+
+
 
 }
