@@ -46,6 +46,9 @@ public class GdaBien extends Auditable {
     @Column(name = "rotulado")
     private String rotulado;
     @Basic(optional = false)
+    @Column(name = "detalle")
+    private String detalle;
+    @Basic(optional = false)
     @Column(name = "fecha_incorporacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaIncorporacion;

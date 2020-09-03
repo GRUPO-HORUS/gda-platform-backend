@@ -15,6 +15,7 @@ public class GDABienDTO {
 
     private String id;
     private String rotulado;
+    private String detalle;
     private double valorIncorporacion;
     private GdaUnidadDTO gdaUnidadUbicacionId;
     private GdaUsuarioDTO gdaUsuarioResponsableId;

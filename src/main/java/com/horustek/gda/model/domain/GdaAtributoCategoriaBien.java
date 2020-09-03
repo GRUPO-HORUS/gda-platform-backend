@@ -53,9 +53,6 @@ public class GdaAtributoCategoriaBien implements Serializable {
     private String tipoDato;
     @Basic(optional = false)
 
-    @JoinColumn(name = "gda_catalogos_categoria_id", referencedColumnName = "id")
-    @ManyToOne
-    private GdaCatalogoCategoriaBien gdaCatalogosCategoriaId;
     @JoinColumn(name = "gda_categoria_bien_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private GdaCategoriaBien gdaCategoriaBienId;
