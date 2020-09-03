@@ -77,4 +77,7 @@ public class GdaBien extends Auditable {
     @JoinColumn(name = "gda_usuario_responsable_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private GdaUsuario gdaUsuarioResponsableId;
+    @OneToOne
+    @JoinColumn(name = "gda_bien_tipoid", referencedColumnName = "id")
+    private GdaBienTipo gdaBienTipo;
 }
