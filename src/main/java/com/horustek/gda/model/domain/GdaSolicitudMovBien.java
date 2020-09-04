@@ -53,16 +53,16 @@ public class GdaSolicitudMovBien extends Auditable {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "gdaSolicitudMovBien")
     private GdaSolicitudMovBienPorCategoria gdaSolicitudMovBienPorCategoria;
     @JoinColumn(name = "gda_origen_movimiento_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaOrigenMovimiento gdaOrigenMovimientoId;
     @JoinColumn(name = "gda_solicitud_mov_paso_ruta_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaSolicitudMovPasoRuta gdaSolicitudMovPasoRutaId;
     @JoinColumn(name = "gda_usuario_creador_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaUsuario gdaUsuarioCreadorId;
     @JoinColumn(name = "gda_usuario_destinatario_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaUsuario gdaUsuarioDestinatarioId;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "gdaSolicitudMovBien")
     private GdaSolictudMovBienEspefico gdaSolictudMovBienEspefico;

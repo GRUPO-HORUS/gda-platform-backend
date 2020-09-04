@@ -51,6 +51,6 @@ public class GdaBienTraza implements Serializable {
     @Column(name = "detalle")
     private String detalle;
     @JoinColumn(name = "gda_bien_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaBien gdaBienId;
 }

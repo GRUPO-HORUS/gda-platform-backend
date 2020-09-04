@@ -46,7 +46,7 @@ public class GdaSolicitudMovBienPorCategoria extends Auditable {
     @Basic(optional = false)
 
     @JoinColumn(name = "gda_categoria_bien_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaCategoriaBien gdaCategoriaBienId;
 
 

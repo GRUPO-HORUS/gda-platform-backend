@@ -44,10 +44,10 @@ public class GdaSolicitudMovPasoRutaParticipantes extends Auditable {
     private String id;
     @Basic(optional = false)
     @JoinColumn(name = "gda_solicitud_mov_paso_ruta_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaSolicitudMovPasoRuta gdaSolicitudMovPasoRutaId;
     @JoinColumn(name = "gda_usuario_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaUsuario gdaUsuarioId;
 
 }

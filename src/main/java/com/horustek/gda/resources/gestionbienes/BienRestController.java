@@ -1,6 +1,9 @@
 package com.horustek.gda.resources.gestionbienes;
 
+import com.horustek.gda.services.gestionbien.bien.IBienService;
 import com.horustek.gda.services.seguridad.usuario.IUsuarioService;
+import com.horustek.gda.shared.dto.gestionbienes.GDABienDTO;
+import com.horustek.gda.shared.dto.gestionbienes.GDABienTipoDTO;
 import com.horustek.gda.shared.dto.seguridad.GdaUsuarioDTO;
 import com.horustek.gda.shared.dto.seguridad.RegistroDTO;
 import io.micrometer.core.annotation.Timed;
@@ -20,30 +23,27 @@ import javax.validation.constraints.NotNull;
 @RestController
 @RequestMapping("/bien")
 public class BienRestController {
-    private final IUsuarioService usuarioService;
+    private final IBienService bienService;
 
     @GetMapping
-    @Timed("gda.metrics.getAllUsers")
-    public ResponseEntity<?> getAllUsers(@NotNull Pageable pageable) {
-        Page<GdaUsuarioDTO> usuariosDTOS = usuarioService.findAll(pageable);
-        return new ResponseEntity<>(usuariosDTOS, HttpStatus.OK);
+    public ResponseEntity<?> getAllBienes(@NotNull Pageable pageable) {
+        Page<GDABienDTO> bienesDTOs = bienService.findAll(pageable);
+        return new ResponseEntity<>(bienesDTOs, HttpStatus.OK);
     }
 
-    @GetMapping("/username/{username}")
-    public ResponseEntity<?> findByUsername(@PathVariable String username) {
-        GdaUsuarioDTO dto = usuarioService.findByUsername(username);
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+    @GetMapping("/tipos")
+    public ResponseEntity<?> getAllTipos(@NotNull Pageable pageable) {
+        Page<GDABienTipoDTO> bienesTipoDTOs = bienService.findAllTiposBienes(pageable);
+        return new ResponseEntity<>(bienesTipoDTOs, HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<?> findById(@PathVariable String id) {
-        GdaUsuarioDTO dto = usuarioService.findById(id);
-        return new ResponseEntity<>(dto, HttpStatus.OK);
-    }
 
-    @PostMapping("/registro")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody RegistroDTO registroDTO) {
-        usuarioService.register(registroDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
+
+//    @GetMapping("{id}")
+//    public ResponseEntity<?> findById(@PathVariable String id) {
+//        GdaUsuarioDTO dto = usuarioService.findById(id);
+//        return new ResponseEntity<>(dto, HttpStatus.OK);
+//    }
+
+
 }

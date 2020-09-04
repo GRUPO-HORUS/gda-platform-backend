@@ -47,10 +47,10 @@ public class GdaBienFijoDatos extends Auditable {
     private String valor;
     @Basic(optional = false)
     @JoinColumn(name = "gda_atributo_categoria_bien_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaAtributoCategoriaBien gdaAtributoCategoriaBienId;
     @JoinColumn(name = "gda_bien_fijo_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaBien gdaBienFijoId;
 
 }

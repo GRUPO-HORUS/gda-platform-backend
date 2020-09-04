@@ -54,7 +54,7 @@ public class GdaAtributoCategoriaBien implements Serializable {
     @Basic(optional = false)
 
     @JoinColumn(name = "gda_categoria_bien_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaCategoriaBien gdaCategoriaBienId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaAtributoCategoriaBienId")
     private List<GdaBienFijoDatos> gdaBienFijoDatosList;

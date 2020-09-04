@@ -49,7 +49,7 @@ public class GdaCategoriaBien extends Auditable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaCategoriaBienId")
     private List<GdaCategoriaBien> gdaCategoriaBienList;
     @JoinColumn(name = "gda_categoria_bien_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaCategoriaBien gdaCategoriaBienId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaCategoriaBienId")
     private List<GdaSolicitudMovBienPorCategoria> gdaSolicitudMovBienPorCategoriaList;

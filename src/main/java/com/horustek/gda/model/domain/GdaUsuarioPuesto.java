@@ -30,12 +30,12 @@ public class GdaUsuarioPuesto extends Auditable {
     private String id;
     @Basic(optional = false)
     @JoinColumn(name = "gda_cargo_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaCargo gdaCargoId;
     @JoinColumn(name = "gda_unidad_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaUnidad gdaUnidadId;
     @JoinColumn(name = "gda_usuario_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaUsuario gdaUsuarioId;
 }

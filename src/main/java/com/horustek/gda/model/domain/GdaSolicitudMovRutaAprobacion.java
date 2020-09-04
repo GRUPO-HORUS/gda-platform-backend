@@ -47,7 +47,7 @@ public class GdaSolicitudMovRutaAprobacion extends Auditable {
     private String gdaSolicitudMovBiengdaOrigenMovimientoid;
     @Basic(optional = false)
     @JoinColumn(name = "gda_solicitud_mov_bien_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaSolicitudMovBien gdaSolicitudMovBienId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaSolicitudMovRutaAprobacionid")
     private List<GdaSolicitudMovPasoRuta> gdaSolicitudMovPasoRutaList;

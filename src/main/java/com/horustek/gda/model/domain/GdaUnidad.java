@@ -47,15 +47,15 @@ public class GdaUnidad extends Auditable {
     private String nombre;
     @Basic(optional = false)
     @JoinColumn(name = "gda_entidad_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaEntidad gdaEntidadId;
     @JoinColumn(name = "gda_tipo_unidad_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaTipoUnidad gdaTipoUnidadId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaUnidadPadreId")
     private List<GdaUnidad> gdaUnidadList;
     @JoinColumn(name = "gda_unidad_padre_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaUnidad gdaUnidadPadreId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaUnidadId")
     private List<GdaUsuario> gdaUsuarioList;

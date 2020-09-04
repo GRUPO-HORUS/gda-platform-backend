@@ -65,16 +65,16 @@ public class GdaBien extends Auditable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaBienPadreId")
     private List<GdaBien> gdaBienList;
     @JoinColumn(name = "gda_bien_padre_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaBien gdaBienPadreId;
     @JoinColumn(name = "gda_categoria_bien_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaCategoriaBien gdaCategoriaBienId;
     @JoinColumn(name = "gda_unidad_ubicacion_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaUnidad gdaUnidadUbicacionId;
     @JoinColumn(name = "gda_usuario_responsable_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaUsuario gdaUsuarioResponsableId;
     @OneToOne
     @JoinColumn(name = "gda_bien_tipoid", referencedColumnName = "id")

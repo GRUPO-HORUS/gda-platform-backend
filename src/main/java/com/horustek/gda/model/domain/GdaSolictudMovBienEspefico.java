@@ -43,7 +43,7 @@ public class GdaSolictudMovBienEspefico extends Auditable {
     private String gdaSolicitudMovBiengdaOrigenMovimientoid;
     @Basic(optional = false)
     @JoinColumn(name = "gda_bien_fijoid", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private GdaBien gdaBienFijoid;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "gda_solicitud_mov_bien_id")
