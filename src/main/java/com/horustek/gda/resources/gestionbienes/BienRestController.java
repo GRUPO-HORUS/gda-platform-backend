@@ -1,6 +1,7 @@
 package com.horustek.gda.resources.gestionbienes;
 
 import com.horustek.gda.services.gestionbien.bien.IBienService;
+import com.horustek.gda.shared.dto.gestionbienes.GdaDetalleBienDTO;
 import com.horustek.gda.shared.dto.gestionbienes.GDABienDTO;
 import com.horustek.gda.shared.dto.gestionbienes.GDABienTipoDTO;
 import com.horustek.gda.shared.dto.gestionbienes.RegistroBienDTO;
@@ -12,8 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -38,6 +39,12 @@ public class BienRestController {
     public ResponseEntity<?> getAllTipos(@NotNull Pageable pageable) {
         Page<GDABienTipoDTO> bienesTipoDTOs = bienService.findAllTiposBienes(pageable);
         return new ResponseEntity<>(bienesTipoDTOs, HttpStatus.OK);
+    }
+
+    @GetMapping("/detalle/{idBien}")
+    public ResponseEntity<?> getDetalleBien(@PathVariable String idBien) {
+        GdaDetalleBienDTO gdaDetalleBienDTOS = bienService.obtenerListadoAtributosBien(idBien);
+        return new ResponseEntity<>(gdaDetalleBienDTOS, HttpStatus.OK);
     }
 
 

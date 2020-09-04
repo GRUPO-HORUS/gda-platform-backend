@@ -43,18 +43,11 @@ public class GdaAtributoCategoriaBien implements Serializable {
     @Column(name = "id")
     private String id;
     @Basic(optional = false)
-    @Column(name = "requerido")
-    private boolean requerido;
+    @Column(name = "nombre")
+    private String nombre;
     @Basic(optional = false)
-    @Column(name = "unico")
-    private boolean unico;
-    @Basic(optional = false)
-    @Column(name = "tipo_dato")
-    private String tipoDato;
-    @Basic(optional = false)
-
     @JoinColumn(name = "gda_categoria_bien_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private GdaCategoriaBien gdaCategoriaBienId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaAtributoCategoriaBienId")
     private List<GdaBienFijoDatos> gdaBienFijoDatosList;
