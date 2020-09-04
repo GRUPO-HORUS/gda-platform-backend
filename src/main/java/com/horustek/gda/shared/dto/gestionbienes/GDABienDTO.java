@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -18,6 +20,7 @@ public class GDABienDTO {
     private String id;
     private String rotulado;
     private String detalle;
+    private Date fechaIncorporacion;
     private double valorIncorporacion;
     private GdaCategoriaBienDTO gdaCategoriaBienId;
     private GdaUnidadDTO gdaUnidadUbicacionId;

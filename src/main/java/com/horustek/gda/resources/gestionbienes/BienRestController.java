@@ -1,12 +1,9 @@
 package com.horustek.gda.resources.gestionbienes;
 
 import com.horustek.gda.services.gestionbien.bien.IBienService;
-import com.horustek.gda.services.seguridad.usuario.IUsuarioService;
 import com.horustek.gda.shared.dto.gestionbienes.GDABienDTO;
 import com.horustek.gda.shared.dto.gestionbienes.GDABienTipoDTO;
-import com.horustek.gda.shared.dto.seguridad.GdaUsuarioDTO;
-import com.horustek.gda.shared.dto.seguridad.RegistroDTO;
-import io.micrometer.core.annotation.Timed;
+import com.horustek.gda.shared.dto.gestionbienes.RegistroBienDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,6 +21,12 @@ import javax.validation.constraints.NotNull;
 @RequestMapping("/bien")
 public class BienRestController {
     private final IBienService bienService;
+
+    @PostMapping
+    public ResponseEntity<?> getAllBienes(@RequestBody RegistroBienDTO registroBienDTO) {
+        bienService.crearBien(registroBienDTO);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 
     @GetMapping
     public ResponseEntity<?> getAllBienes(@NotNull Pageable pageable) {

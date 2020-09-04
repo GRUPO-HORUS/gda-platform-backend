@@ -2,13 +2,14 @@ package com.horustek.gda.services.gestionbien.bien;
 
 import com.horustek.gda.shared.dto.gestionbienes.GDABienDTO;
 import com.horustek.gda.shared.dto.gestionbienes.GDABienTipoDTO;
+import com.horustek.gda.shared.dto.gestionbienes.RegistroBienDTO;
 import com.horustek.gda.shared.dto.seguridad.GdaUsuarioDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface IBienService {
 
-    void crearBien();
+    void crearBien(RegistroBienDTO registroBienDTO);
 
     /**
      * Obtener todos los Bienes  del sistema

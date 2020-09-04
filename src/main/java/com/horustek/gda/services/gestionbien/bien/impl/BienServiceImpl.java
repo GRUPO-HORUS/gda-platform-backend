@@ -8,6 +8,7 @@ import com.horustek.gda.repositories.gestionbienes.BienTipoRepository;
 import com.horustek.gda.services.gestionbien.bien.IBienService;
 import com.horustek.gda.shared.dto.gestionbienes.GDABienDTO;
 import com.horustek.gda.shared.dto.gestionbienes.GDABienTipoDTO;
+import com.horustek.gda.shared.dto.gestionbienes.RegistroBienDTO;
 import com.horustek.gda.shared.dto.seguridad.GdaUsuarioDTO;
 import com.horustek.gda.shared.mapper.gestiondebienes.GdaBienMapper;
 import com.horustek.gda.shared.mapper.gestiondebienes.GdaBienTipoMapper;
@@ -31,8 +32,12 @@ public class BienServiceImpl implements IBienService {
     private final GdaBienMapper gdaBienMapper;
     private final GdaBienTipoMapper gdaBienTipoMapper;
 
+
     @Override
-    public void crearBien() {
+    public void crearBien(RegistroBienDTO registroBienDTO) {
+
+
+
 
     }
 
