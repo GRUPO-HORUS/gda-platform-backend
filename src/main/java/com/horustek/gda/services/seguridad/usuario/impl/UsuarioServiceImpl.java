@@ -3,6 +3,7 @@ package com.horustek.gda.services.seguridad.usuario.impl;
 import com.horustek.gda.infra.exceptions.BusinessException;
 import com.horustek.gda.infra.exceptions.ErrorCodesEnum;
 import com.horustek.gda.model.domain.GdaRol;
+import com.horustek.gda.model.domain.GdaUnidad;
 import com.horustek.gda.model.domain.GdaUsuario;
 import com.horustek.gda.repositories.seguridad.RolRepository;
 import com.horustek.gda.repositories.seguridad.UsuarioRepository;
@@ -72,6 +73,13 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
     public GdaUsuarioDTO findByUsername(String nombreUsuario) {
         Optional<GdaUsuario> gdaUsuario = usuarioRepository.findByNombreUsuarioIgnoreCase(nombreUsuario);
         return gdaUsuario.map(gdaUsuarioMapper::toGdaUsuarioDTO).orElse(null);
+    }
+
+    @Override
+    public GdaUnidad findUnidadFromUser(String nombreUsuario) {
+        Optional<GdaUsuario> gdaUsuario = usuarioRepository.findByNombreUsuarioIgnoreCase(nombreUsuario);
+        return gdaUsuario.filter(usuario -> usuario.getGdaUnidadId() != null).map(GdaUsuario::getGdaUnidadId)
+                .orElse(null);
     }
 
     @Override
