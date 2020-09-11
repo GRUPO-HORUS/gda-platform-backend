@@ -25,6 +25,6 @@ public class GDABienDTO {
     private GdaCategoriaBienDTO gdaCategoriaBienId;
     private GdaUnidadDTO gdaUnidadUbicacionId;
     private GdaUsuarioDTO gdaUsuarioResponsableId;
-    private GdaBienTipo gdaBienTipo;
+    private GDABienTipoDTO gdaBienTipo;
 
 }

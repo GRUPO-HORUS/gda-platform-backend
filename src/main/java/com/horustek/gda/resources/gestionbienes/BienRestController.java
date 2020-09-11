@@ -24,7 +24,7 @@ public class BienRestController {
     private final IBienService bienService;
 
     @PostMapping
-    public ResponseEntity<?> getAllBienes(@RequestBody RegistroBienDTO registroBienDTO) {
+    public ResponseEntity<?> registrarBien(@RequestBody RegistroBienDTO registroBienDTO) {
         bienService.crearBien(registroBienDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
