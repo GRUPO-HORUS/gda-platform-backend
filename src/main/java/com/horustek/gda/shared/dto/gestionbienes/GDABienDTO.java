@@ -1,7 +1,5 @@
 package com.horustek.gda.shared.dto.gestionbienes;
 
-import com.horustek.gda.model.domain.GdaBienTipo;
-import com.horustek.gda.model.domain.GdaCategoriaBien;
 import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadDTO;
 import com.horustek.gda.shared.dto.seguridad.GdaUsuarioDTO;
 import lombok.AllArgsConstructor;

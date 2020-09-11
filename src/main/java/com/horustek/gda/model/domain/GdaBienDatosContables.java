@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.Date;
-import java.util.List;
 import javax.persistence.*;
 
 /**
@@ -50,8 +48,8 @@ public class GdaBienDatosContables extends Auditable {
     @JoinColumn(name = "gda_bienid", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private GdaBien gdaBienid;
-    @JoinColumn(name = "gda_coeficiente_depreciacion_id", referencedColumnName = "id")
+    @JoinColumn(name = "gda_coeficiente_reevaluo_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private GdaCoeficienteDepreciacion gdaCoeficienteDepreciacionId;
+    private GdaCoeficienteRevaluo gdaCoeficienteRevaluoId;
 
 }

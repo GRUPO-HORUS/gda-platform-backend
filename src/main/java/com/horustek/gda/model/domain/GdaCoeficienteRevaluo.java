@@ -17,8 +17,8 @@ import javax.persistence.*;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = GdaCoeficienteDepreciacion.class)
-public class GdaCoeficienteDepreciacion extends Auditable {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = GdaCoeficienteRevaluo.class)
+public class GdaCoeficienteRevaluo extends Auditable {
 
     @Id
     @GeneratedValue(generator = "system-uuid-gda_coeficiente_depreciacion")
@@ -32,6 +32,6 @@ public class GdaCoeficienteDepreciacion extends Auditable {
     @Basic(optional = false)
     @Column(name = "valor")
     private double valor;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaCoeficienteDepreciacionId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaCoeficienteRevaluoId")
     private List<GdaBienDatosContables> gdaBienDatosContablesList;
 }
