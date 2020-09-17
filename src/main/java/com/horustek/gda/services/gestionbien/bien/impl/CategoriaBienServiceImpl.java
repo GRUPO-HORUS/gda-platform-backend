@@ -18,16 +18,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CategoriaBienBienServiceImpl implements ICategoriaBienService {
+public class CategoriaBienServiceImpl implements ICategoriaBienService {
 
     private final CategoriaRepository categoriaRepository;
     private final GdaCategoriaBienPadreMapper gdaCategoriaBienPadreMapper;
     private final GdaCategoriaBienMapper gdaCategoriaBienMapper;
     private final GdaCategoriaBienHijaMapper gdaCategoriaBienHijaMapper;
 
-    public CategoriaBienBienServiceImpl(CategoriaRepository categoriaRepository, GdaCategoriaBienPadreMapper gdaCategoriaBienPadreMapper,
-                                        GdaCategoriaBienMapper gdaCategoriaBienMapper,
-                                        GdaCategoriaBienHijaMapper gdaCategoriaBienHijaMapper) {
+    public CategoriaBienServiceImpl(CategoriaRepository categoriaRepository, GdaCategoriaBienPadreMapper gdaCategoriaBienPadreMapper,
+                                    GdaCategoriaBienMapper gdaCategoriaBienMapper,
+                                    GdaCategoriaBienHijaMapper gdaCategoriaBienHijaMapper) {
         this.categoriaRepository = categoriaRepository;
         this.gdaCategoriaBienPadreMapper = gdaCategoriaBienPadreMapper;
         this.gdaCategoriaBienMapper = gdaCategoriaBienMapper;

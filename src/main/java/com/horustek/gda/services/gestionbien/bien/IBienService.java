@@ -35,4 +35,6 @@ public interface IBienService {
      * @return Objeto DTO con el detalle
      */
     GdaDetalleBienDTO obtenerListadoAtributosBien(String idBien);
+
+    public String crearRotuloBien();
 }

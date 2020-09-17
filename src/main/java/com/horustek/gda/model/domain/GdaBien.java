@@ -8,6 +8,7 @@ package com.horustek.gda.model.domain;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.horustek.gda.infra.auditoria.Auditable;
+import com.horustek.gda.model.domain.enumeradores.BienEstadoEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -79,4 +80,7 @@ public class GdaBien extends Auditable {
     @OneToOne
     @JoinColumn(name = "gda_bien_tipoid", referencedColumnName = "id")
     private GdaBienTipo gdaBienTipo;
+    @Column(name = "estado")
+    @Enumerated(EnumType.STRING)
+    private BienEstadoEnum bienEstado;
 }

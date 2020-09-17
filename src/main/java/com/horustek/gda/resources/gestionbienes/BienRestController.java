@@ -48,12 +48,11 @@ public class BienRestController {
     }
 
 
-
-//    @GetMapping("{id}")
-//    public ResponseEntity<?> findById(@PathVariable String id) {
-//        GdaUsuarioDTO dto = usuarioService.findById(id);
-//        return new ResponseEntity<>(dto, HttpStatus.OK);
-//    }
+    @GetMapping("/prueba/public")
+    public ResponseEntity<?> prueba() {
+        String prubea = bienService.crearRotuloBien();
+        return new ResponseEntity<>(prubea, HttpStatus.OK);
+    }
 
 
 }

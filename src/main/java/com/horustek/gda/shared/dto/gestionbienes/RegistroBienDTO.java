@@ -1,6 +1,7 @@
 package com.horustek.gda.shared.dto.gestionbienes;
 
 import com.horustek.gda.model.domain.*;
+import com.horustek.gda.model.domain.enumeradores.BienEstadoEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RegistroBienDTO {
 
+    private String id;
     private String detalle;
     private Date fechaIncorporacion;
     private double valorIncorporacion;
@@ -28,4 +30,5 @@ public class RegistroBienDTO {
     private GdaUnidad gdaUnidadUbicacionId;
     private GdaUsuario gdaUsuarioResponsableId;
     private GdaBienTipo gdaBienTipo;
+    private BienEstadoEnum bienEstadoEnum;
 }
