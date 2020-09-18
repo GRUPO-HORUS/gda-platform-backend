@@ -41,9 +41,9 @@ public class BienTrazaServiceImpl implements IBienTrazaService {
 
 
     @Override
-    public Page<GdaBienTraza> findAll(String bienId, Pageable pageable) {
+    public Page<GdaBienTraza> findAll(String rotuladoId, Pageable pageable) {
 
-        Optional<GdaBien> bien = bienRepository.findById(bienId);
+        Optional<GdaBien> bien = bienRepository.findByRotulado(rotuladoId);
 
         if (bien.isPresent()) {
             Page<GdaBienTraza> listadoTrazasDeUnBien = bienTrazaRepository.findAllByGdaBienId(bien.get(), pageable);

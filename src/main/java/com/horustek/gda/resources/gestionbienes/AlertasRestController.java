@@ -17,14 +17,13 @@ import javax.validation.constraints.NotNull;
 @RestController
 @RequestMapping("/alertas")
 public class AlertasRestController {
+    
     private final IBienTrazaService bienTrazaService;
 
 
-    @GetMapping("/bien/{idBien}")
-    public ResponseEntity<?> getAllBienesTrazas(@PathVariable String idBien, @NotNull Pageable pageable) {
-        Page<GdaBienTraza> bienTrazas = bienTrazaService.findAll(idBien, pageable);
+    @GetMapping("/bien/{rotulado}")
+    public ResponseEntity<?> getAllBienesTrazas(@PathVariable String rotulado, @NotNull Pageable pageable) {
+        Page<GdaBienTraza> bienTrazas = bienTrazaService.findAll(rotulado, pageable);
         return new ResponseEntity<>(bienTrazas, HttpStatus.OK);
     }
-
-
 }

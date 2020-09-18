@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface BienRepository extends JpaRepository<GdaBien, String> {
 
     List<GdaBien> findByRotuladoIsNotNullOrderByFechaCreacionDesc();
+
+    Optional<GdaBien> findByRotulado(String rotulado);
 }
