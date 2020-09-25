@@ -137,8 +137,7 @@ public class BienServiceImpl implements IBienService {
             cerosACompletar.append("0");
         }
 
-        String nuevoRotulo = String.format("%s-%s-%s", "0000", "0001", cerosACompletar + String.valueOf(numeroBien));
-        return nuevoRotulo;
+        return String.format("%s-%s-%s", "0000", "0001", cerosACompletar + String.valueOf(numeroBien));
 
     }
 }

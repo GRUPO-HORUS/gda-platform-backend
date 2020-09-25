@@ -8,7 +8,9 @@ package com.horustek.gda.model.domain;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.horustek.gda.infra.auditoria.Auditable;
+import com.horustek.gda.model.domain.enumeradores.BienEstadoConservacionEnum;
 import com.horustek.gda.model.domain.enumeradores.BienEstadoEnum;
+import com.horustek.gda.model.domain.enumeradores.BienExistenciaInventarioEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -83,4 +85,11 @@ public class GdaBien extends Auditable {
     @Column(name = "estado")
     @Enumerated(EnumType.STRING)
     private BienEstadoEnum bienEstado;
+    @Column(name = "estado_conservacion")
+    @Enumerated(EnumType.STRING)
+    private BienEstadoConservacionEnum bienEstadoConservacion;
+
+    @Column(name = "existencia_inventario")
+    @Enumerated(EnumType.STRING)
+    private BienExistenciaInventarioEnum existenciaInventario;
 }

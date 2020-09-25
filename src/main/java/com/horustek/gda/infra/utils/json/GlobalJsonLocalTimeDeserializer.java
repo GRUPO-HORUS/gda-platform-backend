@@ -1,4 +1,4 @@
-package com.horustek.gda.infra.utils;
+package com.horustek.gda.infra.utils.json;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -7,22 +7,22 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-public class GlobalJsonLocalDateDeserializer extends JsonDeserializer<LocalDate> {
+public class GlobalJsonLocalTimeDeserializer extends JsonDeserializer<LocalTime> {
 
     @Override
-    public LocalDate deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public LocalTime deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         if (jp.getCurrentTokenId() == JsonTokenId.ID_STRING) {
             try {
-                return LocalDate.parse(jp.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-            } catch (DateTimeParseException e) {
-                return LocalDate.parse(jp.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                return LocalTime.parse(jp.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+            }
+            catch (DateTimeParseException e) {
+                return LocalTime.parse(jp.getText(), DateTimeFormatter.ofPattern("HH:mm:ss"));
             }
         }
         return null;
     }
 }
-

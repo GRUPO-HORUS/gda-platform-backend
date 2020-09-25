@@ -1,4 +1,4 @@
-package com.horustek.gda.shared.dto.gestionbienes;
+package com.horustek.gda.shared.dto.gestionEntidades;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GDABienTipoDTO {
+public class GdaUnidadHijaDTO {
 
     private String id;
-    private String descripcion;
-
+    private String nombre;
+    private GdaTipoUnidadDTO gdaTipoUnidadId;
 }

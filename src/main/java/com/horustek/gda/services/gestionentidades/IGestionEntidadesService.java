@@ -1,9 +1,9 @@
 package com.horustek.gda.services.gestionentidades;
 
-import com.horustek.gda.model.domain.GdaEntidad;
-import com.horustek.gda.model.domain.GdaUnidad;
 import com.horustek.gda.shared.dto.gestionEntidades.GdaTipoUnidadDTO;
-import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadDTO;
+import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadRequestDTO;
+import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadHijaDTO;
+import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadPadreDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -32,17 +32,31 @@ public interface IGestionEntidadesService {
      * Listado de unidades de una entidad
      * @param nombre Nombre de la entidad de la cual se desea conocer sus unidades
      */
-    List<GdaUnidadDTO> listadoUnidadesDadoNombreEntidad(String nombreEntidad);
+    List<GdaUnidadRequestDTO> listadoUnidadesDadoNombreEntidad(String nombreEntidad);
 
     /**
-     * Este método se encarga de asignar a un listado de entidades, una unidad padre
-     * @param nombre Nombre de la entidad de la cual se desea conocer sus unidades
+     *  Este método se encarga de asignar a un listado de entidades, una unidad padre
+     * @param unidadPadreDTO Unidad que fungira como la padre
+     * @param unidades listado de unidades hijas
      */
-    void asignarUnidadPadreAListadoDeUnidades(GdaUnidadDTO unidadPadreDTO, List<GdaUnidadDTO> unidades);
+    void asignarUnidadPadreAListadoDeUnidades(GdaUnidadRequestDTO unidadPadreDTO, List<GdaUnidadRequestDTO> unidades);
 
     /**
      * Crear una unidad
      * @param unidadDTO Objeto con los datos de la unidad a insertar
      */
-    void crearUnidad(GdaUnidadDTO unidadDTO);
+    void crearUnidad(GdaUnidadRequestDTO unidadDTO);
+
+    /**
+     * Listado de unidades padres de una entidad
+     * @param nombreEntidad Nombre de la entidad de la cual se desea conocer sus unidades padres
+     */
+    List<GdaUnidadPadreDTO> listadoUnidadesPadresDadoNombreEntidad(String nombreEntidad);
+
+    /**
+     * Listado de unidades hijas de una Entidad en particular dado el id de una unidad Padre de dicha Entidad
+     * @param idUnidadPadre
+     * @return
+     */
+    List<GdaUnidadHijaDTO> listadoUnidadesHijasDadoUnidadPadre(String nombreEntidad, String idUnidadPadre);
 }

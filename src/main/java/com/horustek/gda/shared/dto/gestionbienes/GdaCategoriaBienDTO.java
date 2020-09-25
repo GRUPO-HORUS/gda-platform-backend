@@ -1,6 +1,8 @@
 package com.horustek.gda.shared.dto.gestionbienes;
 
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.horustek.gda.model.domain.GdaAtributoCategoriaBien;
 import com.horustek.gda.model.domain.GdaBien;
 import com.horustek.gda.model.domain.GdaCategoriaBien;
@@ -17,10 +19,6 @@ public class GdaCategoriaBienDTO {
     private String id;
     private String descripcion;
     private String codigo;
-    private List<GdaAtributoCategoriaBien> gdaAtributoCategoriaBienList;
-    private List<GdaCategoriaBien> gdaCategoriaBienList;
-    private GdaCategoriaBien gdaCategoriaBienId;
-    private List<GdaSolicitudMovBienPorCategoria> gdaSolicitudMovBienPorCategoriaList;
-    private List<GdaBien> gdaBienList;
-
+    @JsonProperty("categoriaPadre")
+    private GdaCategoriaBienDTO gdaCategoriaBienId;
 }

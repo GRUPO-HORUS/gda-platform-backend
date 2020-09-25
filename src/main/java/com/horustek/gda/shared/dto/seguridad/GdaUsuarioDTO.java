@@ -1,8 +1,6 @@
 package com.horustek.gda.shared.dto.seguridad;
 
 import com.horustek.gda.model.domain.GdaRol;
-import com.horustek.gda.model.domain.GdaUnidad;
-import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadDTO;
 import lombok.Data;
 
 import java.util.List;

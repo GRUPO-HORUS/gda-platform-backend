@@ -1,7 +1,7 @@
 package com.horustek.gda.infra.core.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.horustek.gda.infra.utils.JsonUtils;
+import com.horustek.gda.infra.utils.json.JsonUtils;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,6 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;

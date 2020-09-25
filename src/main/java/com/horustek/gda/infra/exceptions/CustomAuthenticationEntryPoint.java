@@ -1,5 +1,5 @@
 package com.horustek.gda.infra.exceptions;
-import com.horustek.gda.infra.utils.JsonUtils;
+import com.horustek.gda.infra.utils.json.JsonUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

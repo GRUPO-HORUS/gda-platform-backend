@@ -15,4 +15,5 @@ public interface UnidadRepository extends JpaRepository<GdaUnidad, String>, JpaS
     void actualizarUnidadPadre(String idUnidadPadre, List<GdaUnidad> unidades);
 
     List<GdaUnidad> findGdaUnidadByIdIn(List<String> ids);
+
 }

@@ -1,4 +1,4 @@
-package com.horustek.gda.infra.utils;
+package com.horustek.gda.infra.utils.json;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

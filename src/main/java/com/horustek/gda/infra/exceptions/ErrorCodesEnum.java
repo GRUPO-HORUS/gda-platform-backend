@@ -17,4 +17,5 @@ public enum ErrorCodesEnum {
     GDA_ERR_13,
     GDA_ERR_14,
     GDA_ERR_15,
+    GDA_ERR_16,
 }

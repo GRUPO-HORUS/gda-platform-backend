@@ -1,4 +1,4 @@
-package com.horustek.gda.infra.utils;
+package com.horustek.gda.infra.utils.json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.Version;

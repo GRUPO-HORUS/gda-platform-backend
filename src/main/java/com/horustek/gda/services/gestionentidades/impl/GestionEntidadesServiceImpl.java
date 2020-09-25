@@ -13,7 +13,9 @@ import com.horustek.gda.repositories.gestionentidades.TipoUnidadRepository;
 import com.horustek.gda.repositories.gestionentidades.UnidadRepository;
 import com.horustek.gda.services.gestionentidades.IGestionEntidadesService;
 import com.horustek.gda.shared.dto.gestionEntidades.GdaTipoUnidadDTO;
-import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadDTO;
+import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadRequestDTO;
+import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadHijaDTO;
+import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadPadreDTO;
 import com.horustek.gda.shared.mapper.gestionentidades.GdaTipoUnidadMapper;
 import com.horustek.gda.shared.mapper.gestionentidades.GdaUnidadMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +25,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -84,30 +85,68 @@ public class GestionEntidadesServiceImpl implements IGestionEntidadesService {
         else throw new BusinessException(ErrorCodesEnum.GDA_ERR_07, descripcion);
     }
 
-    public List<GdaUnidadDTO> listadoUnidadesDadoNombreEntidad(String nombreEntidad) {
+    public List<GdaUnidadRequestDTO> listadoUnidadesDadoNombreEntidad(String nombreEntidad) {
 
         Optional<GdaEntidad> optionalGdaEntidad = entidadRepository.findByNombre(nombreEntidad);
 
         if (optionalGdaEntidad.isPresent()) {
             GdaEntidad entidad = optionalGdaEntidad.get();
 
+
             BaseSpecification<GdaUnidad> specification = new BaseSpecification<>();
             specification.add(new SearchCriteria("gdaEntidadId", entidad, SearchOperation.EQUAL));
             List<GdaUnidad> unidadesDeEntidad = unidadRepository.findAll(specification);
-            List<GdaUnidadDTO> unidadDTOS = gdaUnidadMapper.toGdaUnidadDTOs(unidadesDeEntidad);
+            List<GdaUnidadRequestDTO> unidadDTOS = gdaUnidadMapper.toGdaUnidadDTOs(unidadesDeEntidad.stream()
+                    .filter(unidad -> unidad.getGdaUnidadPadreId() == null).collect(Collectors.toList()));
             return unidadDTOS;
         }
         throw new BusinessException(ErrorCodesEnum.GDA_ERR_09, nombreEntidad);
     }
 
+    public List<GdaUnidadPadreDTO> listadoUnidadesPadresDadoNombreEntidad(String nombreEntidad) {
+
+        List<GdaUnidad> unidadesDeEntidad = this.unidadesPadresDeUnaEntidad(nombreEntidad);
+        if (unidadesDeEntidad != null) {
+            return gdaUnidadMapper.toGdaUnidadPadreDTOs(unidadesDeEntidad.stream()
+                    .filter(unidad -> unidad.getGdaUnidadPadreId() == null).collect(Collectors.toList()));
+        }
+
+        return null;
+
+    }
+
     @Override
-    public void asignarUnidadPadreAListadoDeUnidades(GdaUnidadDTO unidadPadreDTO, List<GdaUnidadDTO> unidadesHijasDTO) {
+    public List<GdaUnidadHijaDTO> listadoUnidadesHijasDadoUnidadPadre(String nombreEntidad, String idUnidadPadre) {
+        List<GdaUnidad> unidadesPadresDeEntidad = this.unidadesPadresDeUnaEntidad(nombreEntidad);
+
+        // Si la entidad tiene al menos una entidad padre , verifico que entre estas unidades padres este
+        // la que tiene el id pasado como parametro y voy a listar sus hijas
+        if (unidadesPadresDeEntidad != null && !unidadesPadresDeEntidad.isEmpty()) {
+
+            for (GdaUnidad unidadPadre : unidadesPadresDeEntidad) {
+                // Verifico que esa unidad padre se encuetre dentro de la entidad
+                if (unidadPadre.getId().equals(idUnidadPadre)) {
+                    Optional<GdaUnidad> unidadPadreDB = unidadRepository.findById(idUnidadPadre);
+                    BaseSpecification<GdaUnidad> specification = new BaseSpecification<>();
+                    specification.add(new SearchCriteria("gdaUnidadPadreId", unidadPadreDB, SearchOperation.EQUAL));
+                    List<GdaUnidad> unidadesHijasDePadre = unidadRepository.findAll(specification);
+                    return gdaUnidadMapper.toGdaUnidadHijaDTOs(unidadesHijasDePadre);
+                }
+            }
+            throw new BusinessException(ErrorCodesEnum.GDA_ERR_16, nombreEntidad);
+        }
+
+        throw new BusinessException(ErrorCodesEnum.GDA_ERR_16, nombreEntidad);
+    }
+
+    @Override
+    public void asignarUnidadPadreAListadoDeUnidades(GdaUnidadRequestDTO unidadPadreDTO, List<GdaUnidadRequestDTO> unidadesHijasDTO) {
 
         // Obtener todas las unidades hija de una entidad conocida
         Optional<GdaUnidad> optionlUnidadPadre = unidadRepository.findById(unidadPadreDTO.getId());
         if (optionlUnidadPadre.isPresent()) {
             GdaUnidad unidadPadre = optionlUnidadPadre.get();
-            List<String> idsUnidadesHijas = unidadesHijasDTO.stream().map(GdaUnidadDTO::getId).collect(Collectors.toList());
+            List<String> idsUnidadesHijas = unidadesHijasDTO.stream().map(GdaUnidadRequestDTO::getId).collect(Collectors.toList());
             List<GdaUnidad> unidadesHijas = unidadRepository.findGdaUnidadByIdIn(idsUnidadesHijas);
 
             // Si ese padre tiene unidades hijas entonces voy a actualizar el valor del id de su unidad padre
@@ -119,14 +158,14 @@ public class GestionEntidadesServiceImpl implements IGestionEntidadesService {
 
     @Override
     @Transactional
-    public void crearUnidad(GdaUnidadDTO unidadDTO) {
+    public void crearUnidad(GdaUnidadRequestDTO unidadDTO) {
         if (unidadDTO.getGdaEntidadId() == null)
             throw new BusinessException(ErrorCodesEnum.GDA_ERR_08, unidadDTO.getNombre());
 
         Optional<GdaEntidad> optionalGdaEntidad = entidadRepository.findById(unidadDTO.getGdaEntidadId().getId());
         if (optionalGdaEntidad.isPresent()) {
             // Buscar en las unidades pertenecientes a la entidad de la unidad a crear si hay una con el mismo nombre
-            List<GdaUnidadDTO> unidadesDeLaEntidad = listadoUnidadesDadoNombreEntidad(optionalGdaEntidad.get().getNombre());
+            List<GdaUnidadRequestDTO> unidadesDeLaEntidad = listadoUnidadesDadoNombreEntidad(optionalGdaEntidad.get().getNombre());
 
             unidadesDeLaEntidad.stream().filter(dto -> dto.getNombre()
                     .equals(unidadDTO.getNombre())).forEach(dto -> {
@@ -155,4 +194,20 @@ public class GestionEntidadesServiceImpl implements IGestionEntidadesService {
 
 
     }
+
+
+    private List<GdaUnidad> unidadesPadresDeUnaEntidad(String nombreEntidad) {
+
+        Optional<GdaEntidad> optionalGdaEntidad = entidadRepository.findByNombre(nombreEntidad);
+
+        if (optionalGdaEntidad.isPresent()) {
+            GdaEntidad entidad = optionalGdaEntidad.get();
+            BaseSpecification<GdaUnidad> specification = new BaseSpecification<>();
+            specification.add(new SearchCriteria("gdaEntidadId", entidad, SearchOperation.EQUAL));
+            return unidadRepository.findAll(specification);
+
+        }
+        return null;
+    }
+
 }

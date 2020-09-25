@@ -2,8 +2,7 @@ package com.horustek.gda.resources.gestionentidades;
 
 import com.horustek.gda.services.gestionentidades.IGestionEntidadesService;
 import com.horustek.gda.shared.dto.gestionEntidades.GdaTipoUnidadDTO;
-import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadDTO;
-import com.horustek.gda.shared.dto.seguridad.RegistroDTO;
+import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -30,7 +29,7 @@ public class UnidadRestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> registrarUnidad(@Valid @RequestBody GdaUnidadDTO unidadDTO) {
+    public ResponseEntity<?> registrarUnidad(@Valid @RequestBody GdaUnidadRequestDTO unidadDTO) {
         gestionEntidadesService.crearUnidad(unidadDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
