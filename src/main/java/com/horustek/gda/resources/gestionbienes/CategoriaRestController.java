@@ -2,9 +2,7 @@ package com.horustek.gda.resources.gestionbienes;
 
 import com.horustek.gda.services.gestionbien.bien.ICategoriaBienService;
 import com.horustek.gda.services.seguridad.usuario.IUsuarioService;
-import com.horustek.gda.shared.dto.gestionbienes.GdaCategoriaBienDTO;
-import com.horustek.gda.shared.dto.gestionbienes.GdaCategoriaBienHijaDTO;
-import com.horustek.gda.shared.dto.gestionbienes.GdaCategoriaBienPadreDTO;
+import com.horustek.gda.shared.dto.gestionbienes.*;
 import com.horustek.gda.shared.dto.seguridad.GdaUsuarioDTO;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 
@@ -44,5 +39,12 @@ public class CategoriaRestController {
     public ResponseEntity<?> getCategoriasHijasDadoIdPadre(@PathVariable String idPadre, @NotNull Pageable pageable) {
         Page<GdaCategoriaBienHijaDTO> categoriaBienHijaDTOS = categoriaBienService.getCategoriasHijas(idPadre, pageable);
         return new ResponseEntity<>(categoriaBienHijaDTOS, HttpStatus.OK);
+    }
+
+    @GetMapping("/atributos/{idCategoria}")
+    public ResponseEntity<?> obtenerListadoAtributosCategoria(@PathVariable("idCategoria") String idCategoria) {
+        GdaDetalleAtributoCategoriaFormDTO gdaDetalleAtributoCategoriaFormDTO =
+                categoriaBienService.obtenerLisobtenerListadoAtributosFormCategoria(idCategoria);
+        return new ResponseEntity<>(gdaDetalleAtributoCategoriaFormDTO, HttpStatus.OK);
     }
 }

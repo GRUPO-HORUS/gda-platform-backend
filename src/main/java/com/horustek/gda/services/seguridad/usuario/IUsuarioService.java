@@ -50,4 +50,5 @@ public interface IUsuarioService {
     void register(@Valid RegistroDTO registroDTO);
 
 
+
 }

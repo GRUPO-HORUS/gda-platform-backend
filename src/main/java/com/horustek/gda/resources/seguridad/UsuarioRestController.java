@@ -47,4 +47,11 @@ public class UsuarioRestController {
         usuarioService.register(registroDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @GetMapping("/rol{rol}/unidad/{unidad}")
+    public ResponseEntity<?> findById(@PathVariable String rol, @PathVariable String unidad) {
+//        GdaUsuarioDTO dto = usuarioService.findById(id);
+//        return new ResponseEntity<>(dto, HttpStatus.OK);
+        return null;
+    }
 }

@@ -53,4 +53,6 @@ public interface IBienService {
      * @return Una lista de GDABienAsignacionDTO con los valores de las asignaciones del Bien
      */
     Page<GDABienAsignacionResponseDTO> listadoAsignacionesDeUnBien(String idBien, Pageable pageable);
+
+
 }

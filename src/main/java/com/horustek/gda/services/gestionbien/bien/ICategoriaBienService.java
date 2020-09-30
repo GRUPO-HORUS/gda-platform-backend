@@ -1,9 +1,7 @@
 package com.horustek.gda.services.gestionbien.bien;
 
 import com.horustek.gda.model.domain.GdaCategoriaBien;
-import com.horustek.gda.shared.dto.gestionbienes.GdaCategoriaBienDTO;
-import com.horustek.gda.shared.dto.gestionbienes.GdaCategoriaBienHijaDTO;
-import com.horustek.gda.shared.dto.gestionbienes.GdaCategoriaBienPadreDTO;
+import com.horustek.gda.shared.dto.gestionbienes.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -33,5 +31,11 @@ public interface ICategoriaBienService {
      */
     Page<GdaCategoriaBienHijaDTO> getCategoriasHijas(String idCategoriaPadre, Pageable pageable);
 
+    /**
+     * Obtener listado de detalle de los atributos que son necesarios para conformar el formulario de activos
+     * @param idCategoria Identificador de la categoria de la cual se quieren conocer los atributos
+     * @return Objeto DTO con el detalle
+     */
+    GdaDetalleAtributoCategoriaFormDTO obtenerLisobtenerListadoAtributosFormCategoria(String idCategoria);
 
 }

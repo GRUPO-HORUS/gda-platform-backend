@@ -7,6 +7,8 @@ package com.horustek.gda.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.horustek.gda.model.domain.enumeradores.BienTipoAsignacionEnum;
+import com.horustek.gda.model.domain.enumeradores.TipoDatoAtributosEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,14 +20,13 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
-  /**
+/**
  * Entidad Mapeada de la Base de Datos
  *
  * @author Alejandro Lafourcade
  * @version 1.0
  * date 08/2020
  * copyright Grupo Horus
- *
  */
 @Entity
 @Table(name = "gda_atributo_categoria_bien")
@@ -45,6 +46,13 @@ public class GdaAtributoCategoriaBien implements Serializable {
     @Basic(optional = false)
     @Column(name = "nombre")
     private String nombre;
+    @Column(name = "requerido")
+    private boolean requerido;
+    @Column(name = "unico")
+    private boolean unico;
+    @Column(name = "tipo_dato")
+    @Enumerated(EnumType.STRING)
+    private TipoDatoAtributosEnum tipoDatoAtributos;
     @Basic(optional = false)
     @JoinColumn(name = "gda_categoria_bien_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
