@@ -1,10 +1,7 @@
 package com.horustek.gda.resources.gestionbienes;
 
 import com.horustek.gda.services.gestionbien.bien.IBienService;
-import com.horustek.gda.shared.dto.gestionbienes.GdaDetalleBienDTO;
-import com.horustek.gda.shared.dto.gestionbienes.GDABienDTO;
-import com.horustek.gda.shared.dto.gestionbienes.GDABienTipoDTO;
-import com.horustek.gda.shared.dto.gestionbienes.RegistroBienDTO;
+import com.horustek.gda.shared.dto.gestionbienes.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -47,7 +44,13 @@ public class BienRestController {
         return new ResponseEntity<>(gdaDetalleBienDTOS, HttpStatus.OK);
     }
 
+    @GetMapping("/asignaciones/{idBien}")
+    public ResponseEntity<?> listadoAsignacionesBien(@PathVariable("idBien") String idBien, @NotNull Pageable pageable) {
+        Page<GDABienAsignacionResponseDTO> asignacionDTOS = bienService.listadoAsignacionesDeUnBien(idBien, pageable);
+        return new ResponseEntity<>(asignacionDTOS, HttpStatus.OK);
+    }
 
+    //TODO quitar este metodo que es solo para pruebas
     @GetMapping("/prueba/public")
     public ResponseEntity<?> prueba() {
         String prubea = bienService.crearRotuloBien();

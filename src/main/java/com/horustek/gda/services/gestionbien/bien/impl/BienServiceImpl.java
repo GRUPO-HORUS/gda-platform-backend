@@ -8,13 +8,17 @@ import com.horustek.gda.infra.model.SearchOperation;
 import com.horustek.gda.infra.utils.NumberUtils;
 import com.horustek.gda.model.domain.*;
 import com.horustek.gda.model.domain.enumeradores.BienEstadoEnum;
+import com.horustek.gda.repositories.gestionbienes.BienAsignacionesRepository;
 import com.horustek.gda.repositories.gestionbienes.BienFijoDatosRepository;
 import com.horustek.gda.repositories.gestionbienes.BienRepository;
 import com.horustek.gda.repositories.gestionbienes.BienTipoRepository;
 import com.horustek.gda.repositories.gestionentidades.UnidadRepository;
+import com.horustek.gda.repositories.seguridad.UsuarioRepository;
 import com.horustek.gda.services.gestionbien.bien.IBienService;
 import com.horustek.gda.services.gestionalertas.IBienTrazaService;
 import com.horustek.gda.shared.dto.gestionbienes.*;
+import com.horustek.gda.shared.mapper.gestiondebienes.GdaBienAsignacionMapper;
+import com.horustek.gda.shared.mapper.gestiondebienes.GdaBienAsignacionResponseMapper;
 import com.horustek.gda.shared.mapper.gestiondebienes.GdaBienMapper;
 import com.horustek.gda.shared.mapper.gestiondebienes.GdaBienTipoMapper;
 import lombok.RequiredArgsConstructor;
@@ -36,10 +40,13 @@ import java.util.Optional;
 public class BienServiceImpl implements IBienService {
 
     private final BienRepository bienRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final BienAsignacionesRepository asignacionesRepository;
     private final UnidadRepository unidadRepository;
     private final BienFijoDatosRepository bienFijoDatosRepository;
     private final BienTipoRepository bienTipoRepository;
     private final GdaBienMapper gdaBienMapper;
+    private final GdaBienAsignacionResponseMapper gdaBienAsignacionResponseMapper;
     private final GdaBienTipoMapper gdaBienTipoMapper;
     private final IBienTrazaService traza;
 
@@ -139,5 +146,86 @@ public class BienServiceImpl implements IBienService {
 
         return String.format("%s-%s-%s", "0000", "0001", cerosACompletar + String.valueOf(numeroBien));
 
+    }
+
+    @Override
+    public void asignarResponsabilidades(GDABienAsignacionDTO dto) {
+
+        GdaBien bien = null;
+        GdaUsuario usuario = null;
+
+        Optional<GdaBien> optionalGdaBien = bienRepository.findById(dto.getIdBien());
+        Optional<GdaUsuario> optionalGdaUsuario = usuarioRepository.findById(dto.getIdUsuario());
+        if (optionalGdaBien.isPresent()) {
+            bien = optionalGdaBien.get();
+            if (optionalGdaUsuario.isPresent()) {
+                usuario = optionalGdaUsuario.get();
+
+                // 1- Buscar si para el bien al que se le quiere hacer la asignacion
+                // ya hay un usuario asignado con la
+                // responsabilidad solicitada y el estado activo
+
+                List<GdaBienAsignaciones> asignacionesDelBien = asignacionesRepository
+                        .findByGdaBienIdAndGdaUsuarioIdAndTipoAsignacionAndEstado(
+                                bien,
+                                usuario,
+                                dto.getTipoAsignacion(), dto.getEstado()
+                        );
+
+                // Si el resultado devuelve un valor entonces cambiamos el usuario antiguo por este nuevo
+                // En caso que no se encuentre nada creamos una nueva asigancion
+                if (!asignacionesDelBien.isEmpty()) {
+                    GdaBienAsignaciones asignacionExistente = asignacionesDelBien.get(0);
+                    // En caso de que el usuario que se quiera asignar es el mismo que existe, dejamos todo como está
+                    if (!asignacionExistente.getGdaUsuarioId().equals(usuario)) {
+                        asignacionExistente.setGdaUsuarioId(usuario);
+                        asignacionesRepository.save(asignacionExistente);
+                    }
+
+                } else {
+
+                    // Como el resultado es vacío creamos una nueva asignación para ese bien
+
+                    GdaBienAsignaciones nuevaAsignacion = GdaBienAsignaciones.builder()
+                            .gdaUsuarioId(usuario)
+                            .gdaBienId(bien)
+                            .tipoAsignacion(dto.getTipoAsignacion())
+                            .estado(dto.getEstado())
+                            .build();
+
+                    asignacionesRepository.save(nuevaAsignacion);
+                }
+
+
+            } else {
+                // No existe ese usuario en el sistema
+                throw new BusinessException(ErrorCodesEnum.GDA_ERR_17);
+            }
+
+        } else {
+            throw new BusinessException(ErrorCodesEnum.GDA_ERR_14);
+        }
+
+
+    }
+
+    @Override
+    public Page<GDABienAsignacionResponseDTO> listadoAsignacionesDeUnBien(String idBien, Pageable pageable) {
+
+        if (idBien != null && !idBien.trim().isEmpty()) {
+            Optional<GdaBien> optionalGdaBien = bienRepository.findById(idBien);
+            if (optionalGdaBien.isPresent()) {
+                Page<GdaBienAsignaciones> asignaciones = asignacionesRepository.findByGdaBienId(optionalGdaBien.get(), pageable);
+
+                List<GDABienAsignacionResponseDTO> list = gdaBienAsignacionResponseMapper
+                        .toGdaBienAsignacionResponseDTOs(asignaciones.getContent());
+                return new PageImpl<>(list, pageable, asignaciones.getTotalElements());
+
+            } else {
+                throw new BusinessException(ErrorCodesEnum.GDA_ERR_14);
+            }
+        }
+
+        return null;
     }
 }
