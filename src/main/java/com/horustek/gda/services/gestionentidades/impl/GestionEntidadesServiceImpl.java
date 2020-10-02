@@ -12,12 +12,11 @@ import com.horustek.gda.repositories.gestionentidades.EntidadRepository;
 import com.horustek.gda.repositories.gestionentidades.TipoUnidadRepository;
 import com.horustek.gda.repositories.gestionentidades.UnidadRepository;
 import com.horustek.gda.services.gestionentidades.IGestionEntidadesService;
-import com.horustek.gda.shared.dto.gestionEntidades.GdaTipoUnidadDTO;
-import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadRequestDTO;
-import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadHijaDTO;
-import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadPadreDTO;
+import com.horustek.gda.shared.dto.gestionEntidades.*;
 import com.horustek.gda.shared.mapper.gestionentidades.GdaTipoUnidadMapper;
-import com.horustek.gda.shared.mapper.gestionentidades.GdaUnidadMapper;
+import com.horustek.gda.shared.mapper.gestionentidades.GdaUnidadRequestMapper;
+import com.horustek.gda.shared.mapper.gestionentidades.GdaUnidadResponseMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -30,24 +29,17 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class GestionEntidadesServiceImpl implements IGestionEntidadesService {
 
     private final EntidadRepository entidadRepository;
     private final TipoUnidadRepository tipoUnidadRepository;
     private final GdaTipoUnidadMapper gdaTipoUnidadMapper;
-    private final GdaUnidadMapper gdaUnidadMapper;
+    private final GdaUnidadRequestMapper gdaUnidadRequestMapper;
+    private final GdaUnidadResponseMapper gdaUnidadResponseMapper;
     private final UnidadRepository unidadRepository;
 
-    public GestionEntidadesServiceImpl(EntidadRepository entidadRepository, TipoUnidadRepository tipoUnidadRepository,
-                                       GdaTipoUnidadMapper gdaTipoUnidadMapper, UnidadRepository unidadRepository,
-                                       GdaUnidadMapper gdaUnidadMapper) {
-        this.entidadRepository = entidadRepository;
-        this.tipoUnidadRepository = tipoUnidadRepository;
-        this.gdaTipoUnidadMapper = gdaTipoUnidadMapper;
-        this.gdaUnidadMapper = gdaUnidadMapper;
-        this.unidadRepository = unidadRepository;
-    }
 
     @Override
     public void crearEntidad(String nombre) {
@@ -85,7 +77,7 @@ public class GestionEntidadesServiceImpl implements IGestionEntidadesService {
         else throw new BusinessException(ErrorCodesEnum.GDA_ERR_07, descripcion);
     }
 
-    public List<GdaUnidadRequestDTO> listadoUnidadesDadoNombreEntidad(String nombreEntidad) {
+    public List<GdaUnidadBienResponseDTO> listadoUnidadesDadoNombreEntidad(String nombreEntidad) {
 
         Optional<GdaEntidad> optionalGdaEntidad = entidadRepository.findByNombre(nombreEntidad);
 
@@ -96,7 +88,7 @@ public class GestionEntidadesServiceImpl implements IGestionEntidadesService {
             BaseSpecification<GdaUnidad> specification = new BaseSpecification<>();
             specification.add(new SearchCriteria("gdaEntidadId", entidad, SearchOperation.EQUAL));
             List<GdaUnidad> unidadesDeEntidad = unidadRepository.findAll(specification);
-            List<GdaUnidadRequestDTO> unidadDTOS = gdaUnidadMapper.toGdaUnidadDTOs(unidadesDeEntidad.stream()
+            List<GdaUnidadBienResponseDTO> unidadDTOS = gdaUnidadResponseMapper.toGdaUnidadDTOs(unidadesDeEntidad.stream()
                     .filter(unidad -> unidad.getGdaUnidadPadreId() == null).collect(Collectors.toList()));
             return unidadDTOS;
         }
@@ -107,7 +99,7 @@ public class GestionEntidadesServiceImpl implements IGestionEntidadesService {
 
         List<GdaUnidad> unidadesDeEntidad = this.unidadesPadresDeUnaEntidad(nombreEntidad);
         if (unidadesDeEntidad != null) {
-            return gdaUnidadMapper.toGdaUnidadPadreDTOs(unidadesDeEntidad.stream()
+            return gdaUnidadRequestMapper.toGdaUnidadPadreDTOs(unidadesDeEntidad.stream()
                     .filter(unidad -> unidad.getGdaUnidadPadreId() == null).collect(Collectors.toList()));
         }
 
@@ -130,7 +122,7 @@ public class GestionEntidadesServiceImpl implements IGestionEntidadesService {
                     BaseSpecification<GdaUnidad> specification = new BaseSpecification<>();
                     specification.add(new SearchCriteria("gdaUnidadPadreId", unidadPadreDB, SearchOperation.EQUAL));
                     List<GdaUnidad> unidadesHijasDePadre = unidadRepository.findAll(specification);
-                    return gdaUnidadMapper.toGdaUnidadHijaDTOs(unidadesHijasDePadre);
+                    return gdaUnidadRequestMapper.toGdaUnidadHijaDTOs(unidadesHijasDePadre);
                 }
             }
             throw new BusinessException(ErrorCodesEnum.GDA_ERR_16, nombreEntidad);
@@ -165,7 +157,7 @@ public class GestionEntidadesServiceImpl implements IGestionEntidadesService {
         Optional<GdaEntidad> optionalGdaEntidad = entidadRepository.findById(unidadDTO.getGdaEntidadId().getId());
         if (optionalGdaEntidad.isPresent()) {
             // Buscar en las unidades pertenecientes a la entidad de la unidad a crear si hay una con el mismo nombre
-            List<GdaUnidadRequestDTO> unidadesDeLaEntidad = listadoUnidadesDadoNombreEntidad(optionalGdaEntidad.get().getNombre());
+            List<GdaUnidadBienResponseDTO> unidadesDeLaEntidad = listadoUnidadesDadoNombreEntidad(optionalGdaEntidad.get().getNombre());
 
             unidadesDeLaEntidad.stream().filter(dto -> dto.getNombre()
                     .equals(unidadDTO.getNombre())).forEach(dto -> {

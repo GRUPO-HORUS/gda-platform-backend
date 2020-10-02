@@ -1,9 +1,6 @@
 package com.horustek.gda.services.gestionentidades;
 
-import com.horustek.gda.shared.dto.gestionEntidades.GdaTipoUnidadDTO;
-import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadRequestDTO;
-import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadHijaDTO;
-import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadPadreDTO;
+import com.horustek.gda.shared.dto.gestionEntidades.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -32,7 +29,7 @@ public interface IGestionEntidadesService {
      * Listado de unidades de una entidad
      * @param nombreEntidad Nombre de la entidad de la cual se desea conocer sus unidades
      */
-    List<GdaUnidadRequestDTO> listadoUnidadesDadoNombreEntidad(String nombreEntidad);
+    List<GdaUnidadBienResponseDTO> listadoUnidadesDadoNombreEntidad(String nombreEntidad);
 
     /**
      *  Este método se encarga de asignar a un listado de entidades, una unidad padre

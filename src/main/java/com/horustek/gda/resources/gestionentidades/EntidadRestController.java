@@ -1,6 +1,7 @@
 package com.horustek.gda.resources.gestionentidades;
 
 import com.horustek.gda.services.gestionentidades.IGestionEntidadesService;
+import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadBienResponseDTO;
 import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadRequestDTO;
 import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadHijaDTO;
 import com.horustek.gda.shared.dto.gestionEntidades.GdaUnidadPadreDTO;
@@ -29,7 +30,7 @@ public class EntidadRestController {
 
     @GetMapping("/unidades")
     public ResponseEntity<?> listadoUnidades(@RequestParam(name = "nombre") String nombre) {
-        List<GdaUnidadRequestDTO> unidadDTOS = gestionEntidadesService.listadoUnidadesDadoNombreEntidad(nombre);
+        List<GdaUnidadBienResponseDTO> unidadDTOS = gestionEntidadesService.listadoUnidadesDadoNombreEntidad(nombre);
         return new ResponseEntity<>(unidadDTOS, HttpStatus.OK);
     }
 
