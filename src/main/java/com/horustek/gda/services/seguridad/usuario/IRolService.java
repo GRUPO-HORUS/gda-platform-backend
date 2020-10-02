@@ -22,6 +22,13 @@ public interface IRolService {
      */
     Page<GdaRolDTO>findAll(Pageable pageable);
 
+    /**
+     * Obtener el listado de roles de un usuario
+     * @param idUsuario Identificador del usuario del cual se quieren conocer sus roles
+     * @return Listado de un DTO con todos los roles del usuario
+     */
+    List<GdaRolDTO>findAllUserRol(String idUsuario);
+
     void asignarRolesAUsuario(String idUsuario, List<GdaRol> listadoRoles);
 
     void eliminarRolesAUsuario(String idUsuario);

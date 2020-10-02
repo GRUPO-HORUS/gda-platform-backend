@@ -1,6 +1,9 @@
 package com.horustek.gda.repositories.seguridad;
 
+import com.horustek.gda.model.domain.GdaUnidad;
 import com.horustek.gda.model.domain.GdaUsuario;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -16,6 +19,8 @@ public interface UsuarioRepository extends JpaRepository<GdaUsuario, String>, Jp
     Boolean existsByEmailIgnoreCase(String email);
 
     Optional<GdaUsuario> findByEmailIgnoreCase(String email);
+
+    Page<GdaUsuario> findAllByGdaUnidadId(GdaUnidad unidad, Pageable pageable);
 
 
 }

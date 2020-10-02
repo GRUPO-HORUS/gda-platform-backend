@@ -30,7 +30,7 @@ public interface IGestionEntidadesService {
 
     /**
      * Listado de unidades de una entidad
-     * @param nombre Nombre de la entidad de la cual se desea conocer sus unidades
+     * @param nombreEntidad Nombre de la entidad de la cual se desea conocer sus unidades
      */
     List<GdaUnidadRequestDTO> listadoUnidadesDadoNombreEntidad(String nombreEntidad);
 

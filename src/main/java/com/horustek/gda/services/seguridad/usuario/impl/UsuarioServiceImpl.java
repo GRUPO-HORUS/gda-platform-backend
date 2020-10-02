@@ -5,6 +5,7 @@ import com.horustek.gda.infra.exceptions.ErrorCodesEnum;
 import com.horustek.gda.model.domain.GdaRol;
 import com.horustek.gda.model.domain.GdaUnidad;
 import com.horustek.gda.model.domain.GdaUsuario;
+import com.horustek.gda.repositories.gestionentidades.UnidadRepository;
 import com.horustek.gda.repositories.seguridad.RolRepository;
 import com.horustek.gda.repositories.seguridad.UsuarioRepository;
 import com.horustek.gda.services.seguridad.usuario.IUsuarioService;
@@ -28,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,6 +41,7 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
     private final RolRepository rolRepository;
+    private final UnidadRepository unidadRepository;
     private final GdaUsuarioMapper gdaUsuarioMapper;
     private final PasswordEncoder encoder;
 
@@ -137,6 +140,59 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
                 .enabled(Boolean.TRUE)
                 .build();
         usuarioRepository.save(nuevoUsuario);
+    }
+
+    @Override
+    public Page<GdaUsuarioDTO> listadoUsuarioConUnRolEnUnaUnidad(String nombreRol, String idUnidad, Pageable pageable) {
+
+        List<GdaUsuarioDTO> gdaUsuarioDTOList = new ArrayList<>();
+
+        // Comprobar que exista el rol en el sistema
+        Optional<GdaRol> optionalGdaRol = rolRepository.findByNombre(nombreRol);
+        if (optionalGdaRol.isPresent()) {
+            Optional<GdaUnidad> optionalGdaUnidad = unidadRepository.findById(idUnidad);
+            if (optionalGdaUnidad.isPresent()) {
+
+                Page<GdaUsuarioDTO> usuarioDTOS = obtenerUsuarioDadoIdUnidad(idUnidad, pageable);
+                for (GdaUsuarioDTO usuarioDTO : usuarioDTOS) {
+                    for (GdaRol rol : usuarioDTO.getRoles()) {
+                        if (rol.getNombre().equals(nombreRol)) {
+                            gdaUsuarioDTOList.add(usuarioDTO);
+
+                        }
+                    }
+                }
+
+            } else {
+                throw new BusinessException(ErrorCodesEnum.GDA_ERR_19);
+            }
+
+
+        } else {
+            throw new BusinessException(ErrorCodesEnum.GDA_ERR_05);
+        }
+
+        return new PageImpl<>(gdaUsuarioDTOList, pageable, gdaUsuarioDTOList.size());
+    }
+
+    @Override
+    public Page<GdaUsuarioDTO> obtenerUsuarioDadoIdUnidad(String idUnidad, Pageable pageable) {
+
+        Optional<GdaUnidad> optionalGdaUnidad = unidadRepository.findById(idUnidad);
+        if (optionalGdaUnidad.isPresent()) {
+
+            // Buscar todos los usuarios de esa unidad
+            Page<GdaUsuario> pageUsuariosDeUnidad = usuarioRepository.findAllByGdaUnidadId(optionalGdaUnidad.get(), pageable);
+
+            List<GdaUsuarioDTO> list = gdaUsuarioMapper
+                    .toGdaUsuarioDTOs(pageUsuariosDeUnidad.getContent());
+            return new PageImpl<>(list, pageable, pageUsuariosDeUnidad.getTotalElements());
+
+
+        } else {
+
+            throw new BusinessException(ErrorCodesEnum.GDA_ERR_19);
+        }
     }
 }
 

@@ -43,6 +43,18 @@ public class RolServiceImpl implements IRolService {
         return new PageImpl<>(list, pageable, rolPage.getTotalElements());
     }
 
+    @Override
+    public List<GdaRolDTO> findAllUserRol(String idUsuario) {
+
+        Optional<GdaUsuario> optionalGdaUsuario = usuarioRepository.findById(idUsuario);
+        if(optionalGdaUsuario.isPresent()){
+
+        }
+
+
+        return null;
+    }
+
 
     @Override
     @Transactional

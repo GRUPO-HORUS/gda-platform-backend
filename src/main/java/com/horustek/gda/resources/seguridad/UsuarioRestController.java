@@ -1,5 +1,7 @@
 package com.horustek.gda.resources.seguridad;
 
+import com.horustek.gda.model.domain.GdaRol;
+import com.horustek.gda.repositories.seguridad.RolRepository;
 import com.horustek.gda.services.seguridad.usuario.IUsuarioService;
 import com.horustek.gda.shared.dto.seguridad.GdaUsuarioDTO;
 import com.horustek.gda.shared.dto.seguridad.RegistroDTO;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.security.Principal;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -48,10 +52,9 @@ public class UsuarioRestController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/rol{rol}/unidad/{unidad}")
-    public ResponseEntity<?> findById(@PathVariable String rol, @PathVariable String unidad) {
-//        GdaUsuarioDTO dto = usuarioService.findById(id);
-//        return new ResponseEntity<>(dto, HttpStatus.OK);
-        return null;
+    @GetMapping("/rol/{nombre}/unidad/{id}")
+    public ResponseEntity<?> listadoUsuarioConUnRolEnUnaUnidad(@PathVariable("nombre") String nombreRol, @PathVariable("id") String idUnidad, @NotNull Pageable pageable) {
+        Page<GdaUsuarioDTO> usuariosDTOS = usuarioService.listadoUsuarioConUnRolEnUnaUnidad(nombreRol, idUnidad, pageable);
+        return new ResponseEntity<>(usuariosDTOS, HttpStatus.OK);
     }
 }
