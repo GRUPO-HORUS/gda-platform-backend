@@ -1,6 +1,5 @@
 package com.horustek.gda.resources.informes;
 
-import com.horustek.gda.infra.exceptions.BusinessException;
 import com.horustek.gda.infra.utils.reports.ExportFormat;
 import com.horustek.gda.infra.utils.reports.ReportService;
 import com.horustek.gda.shared.dto.gestioninformes.GDAInformesDTO;
@@ -9,13 +8,16 @@ import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.io.IOUtils;
-import org.springframework.boot.autoconfigure.web.servlet.DefaultJerseyApplicationPath;
-import org.springframework.http.*;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

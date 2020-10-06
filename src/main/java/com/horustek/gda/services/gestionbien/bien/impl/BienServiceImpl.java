@@ -132,6 +132,9 @@ public class BienServiceImpl implements IBienService {
     @Override
     public String crearRotuloBien() {
 
+        // El # del Rótulo se compone de la siguiente manera: AA-BB-CC-DD
+
+
         List<GdaBien> bienList = bienRepository.findByRotuladoIsNotNullOrderByFechaCreacionDesc();
         GdaBien lastBien = bienList.get(0);
         String ultimoRotulado = lastBien.getRotulado();
