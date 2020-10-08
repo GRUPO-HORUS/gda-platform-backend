@@ -13,10 +13,6 @@ import lombok.NoArgsConstructor;
 public class AtributoFormularioBienRequestDTO {
 
     private String idAtributoCategoriaBien;
-    private String nombre;
     private String valor;
-    private boolean  requerido;
-    private boolean  unico;
-    private TipoDatoAtributosEnum tipoDatoAtributos;
 
 }

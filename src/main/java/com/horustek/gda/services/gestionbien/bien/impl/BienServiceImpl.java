@@ -98,6 +98,7 @@ public class BienServiceImpl implements IBienService {
                 .build();
 
         // Salvar el bien
+        bienRepository.save(nuevoBien);
 
 
         //Salvar los atributos dinámicos
@@ -115,6 +116,7 @@ public class BienServiceImpl implements IBienService {
                     .estado(EstadoInactividadEnum.ACTIVO)
                     .idBien(nuevoBien.getId())
                     .idUsuario(registroBienDTO.getUsuarioResponsableId())
+                    .tipoAsignacion(BienTipoAsignacionEnum.RESPONSABLE)
                     .build();
             asignarResponsabilidades(asignacionUsuarioResponsable);
 
@@ -127,6 +129,7 @@ public class BienServiceImpl implements IBienService {
                     .estado(EstadoInactividadEnum.ACTIVO)
                     .idBien(nuevoBien.getId())
                     .idUsuario(registroBienDTO.getUsuarioAsignadoId())
+                    .tipoAsignacion(BienTipoAsignacionEnum.ASIGNADO)
                     .build();
             asignarResponsabilidades(asignacionUsuarioAsignado);
 
@@ -139,6 +142,7 @@ public class BienServiceImpl implements IBienService {
                     .estado(EstadoInactividadEnum.ACTIVO)
                     .idBien(nuevoBien.getId())
                     .idUsuario(registroBienDTO.getUsuarioAprobadorId())
+                    .tipoAsignacion(BienTipoAsignacionEnum.APROBADOR)
                     .build();
             asignarResponsabilidades(asignacionUsuarioAprobador);
 
@@ -151,6 +155,7 @@ public class BienServiceImpl implements IBienService {
                     .estado(EstadoInactividadEnum.ACTIVO)
                     .idBien(nuevoBien.getId())
                     .idUsuario(registroBienDTO.getUsuarioControlId())
+                    .tipoAsignacion(BienTipoAsignacionEnum.CONTROL)
                     .build();
             asignarResponsabilidades(asignacionUsuarioAprobador);
 
@@ -164,6 +169,7 @@ public class BienServiceImpl implements IBienService {
                     .estado(EstadoInactividadEnum.ACTIVO)
                     .idBien(nuevoBien.getId())
                     .idUsuario(registroBienDTO.getUsuarioRegistroId())
+                    .tipoAsignacion(BienTipoAsignacionEnum.REGISTRO)
                     .build();
             asignarResponsabilidades(asignacionUsuarioRegistro);
 
