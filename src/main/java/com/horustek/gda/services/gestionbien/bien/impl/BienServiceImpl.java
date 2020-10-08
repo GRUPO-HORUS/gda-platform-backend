@@ -8,14 +8,14 @@ import com.horustek.gda.infra.model.SearchOperation;
 import com.horustek.gda.infra.utils.NumberUtils;
 import com.horustek.gda.model.domain.*;
 import com.horustek.gda.model.domain.enumeradores.BienEstadoEnum;
-import com.horustek.gda.repositories.gestionbienes.BienAsignacionesRepository;
-import com.horustek.gda.repositories.gestionbienes.BienFijoDatosRepository;
-import com.horustek.gda.repositories.gestionbienes.BienRepository;
-import com.horustek.gda.repositories.gestionbienes.BienTipoRepository;
+import com.horustek.gda.model.domain.enumeradores.BienTipoAsignacionEnum;
+import com.horustek.gda.model.domain.enumeradores.EstadoInactividadEnum;
+import com.horustek.gda.repositories.gestionbienes.*;
 import com.horustek.gda.repositories.gestionentidades.UnidadRepository;
 import com.horustek.gda.repositories.seguridad.UsuarioRepository;
 import com.horustek.gda.services.gestionbien.bien.IBienService;
 import com.horustek.gda.services.gestionalertas.IBienTrazaService;
+import com.horustek.gda.services.gestionbien.bien.ICategoriaBienService;
 import com.horustek.gda.shared.dto.gestionbienes.*;
 import com.horustek.gda.shared.mapper.gestiondebienes.GdaBienAsignacionMapper;
 import com.horustek.gda.shared.mapper.gestiondebienes.GdaBienAsignacionResponseMapper;
@@ -41,6 +41,7 @@ public class BienServiceImpl implements IBienService {
 
     private final BienRepository bienRepository;
     private final UsuarioRepository usuarioRepository;
+    private final CategoriaRepository bienCategoriaRepository;
     private final BienAsignacionesRepository asignacionesRepository;
     private final UnidadRepository unidadRepository;
     private final BienFijoDatosRepository bienFijoDatosRepository;
@@ -49,6 +50,7 @@ public class BienServiceImpl implements IBienService {
     private final GdaBienAsignacionResponseMapper gdaBienAsignacionResponseMapper;
     private final GdaBienTipoMapper gdaBienTipoMapper;
     private final IBienTrazaService traza;
+    private final ICategoriaBienService categoriaBienService;
 
 
     @Override
@@ -57,14 +59,25 @@ public class BienServiceImpl implements IBienService {
 
         //TODO aca se necesita implementar la parte dinámica de los bienes
 
+
         // Por defecto un bien siempre comienza con el estado pendiente de etiquetado
         BienEstadoEnum bienEstadoEnum = BienEstadoEnum.PENDIENTE_ETIQUETADO;
 
         // Si a la hora de la creación se le especifica la ubicación entonces hay que asignar el bien a esta ubicación
         GdaUnidad unidadDelBien = null;
-        if (registroBienDTO.getGdaUnidadUbicacionId() != null
-                && registroBienDTO.getGdaUnidadUbicacionId().getId() != null)
-            unidadDelBien = unidadRepository.getOne(registroBienDTO.getGdaUnidadUbicacionId().getId());
+        if (registroBienDTO.getUnidadUbicacionId() != null)
+            unidadDelBien = unidadRepository.getOne(registroBienDTO.getUnidadUbicacionId());
+
+        // Tipo del Bien
+        GdaBienTipo gdaBienTipo = null;
+        if (registroBienDTO.getTipoBienId() != null)
+            gdaBienTipo = bienTipoRepository.getOne(registroBienDTO.getTipoBienId());
+
+        // Categoría del Bien
+        GdaCategoriaBien gdaCategoriaBien = null;
+        if (registroBienDTO.getCategoriaBienId() != null)
+            gdaCategoriaBien = bienCategoriaRepository.getOne(registroBienDTO.getCategoriaBienId());
+
 
         // Crear el rotulo del bien
         String rotulado = crearRotuloBien();
@@ -72,16 +85,92 @@ public class BienServiceImpl implements IBienService {
 
         // Salvar los bienes padres
         GdaBien nuevoBien = GdaBien.builder()
-                .bienEstado(bienEstadoEnum)
+                .bienEstadoConservacion(registroBienDTO.getEstadoConservacion())
                 .detalle(registroBienDTO.getDetalle())
-                .fechaIncorporacion(new Date())
-                .valorIncorporacion(registroBienDTO.getValorIncorporacion())
-                .gdaBienTipo(registroBienDTO.getGdaBienTipo())
+                .existenciaInventario(registroBienDTO.getExistenciaInventario())
+                .gdaBienTipo(gdaBienTipo)
+                .gdaCategoriaBienId(gdaCategoriaBien)
                 .gdaUnidadUbicacionId(unidadDelBien)
+                .valorIncorporacion(registroBienDTO.getValorIncorporacion())
+                .bienEstado(bienEstadoEnum)
+                .fechaIncorporacion(new Date())
                 .rotulado(rotulado)
                 .build();
 
+        // Salvar el bien
 
+
+        //Salvar los atributos dinámicos
+        categoriaBienService.insertarAtributosDinamicos(registroBienDTO.getAtributosDinamicos(), nuevoBien);
+
+
+        // Salvar las asignaciones RESPONSABLE,ASIGNADO,APROBADOR,CONTROL, REGISTRO
+        // Todos las asignaciones por defectos son ACTIVAS
+
+
+        // RESPONSABLE
+
+        if (registroBienDTO.getUsuarioResponsableId() != null) {
+            GDABienAsignacionDTO asignacionUsuarioResponsable = GDABienAsignacionDTO.builder()
+                    .estado(EstadoInactividadEnum.ACTIVO)
+                    .idBien(nuevoBien.getId())
+                    .idUsuario(registroBienDTO.getUsuarioResponsableId())
+                    .build();
+            asignarResponsabilidades(asignacionUsuarioResponsable);
+
+        }
+
+        //ASIGNADO
+
+        if (registroBienDTO.getUsuarioAsignadoId() != null) {
+            GDABienAsignacionDTO asignacionUsuarioAsignado = GDABienAsignacionDTO.builder()
+                    .estado(EstadoInactividadEnum.ACTIVO)
+                    .idBien(nuevoBien.getId())
+                    .idUsuario(registroBienDTO.getUsuarioAsignadoId())
+                    .build();
+            asignarResponsabilidades(asignacionUsuarioAsignado);
+
+        }
+
+        // APROBADOR
+
+        if (registroBienDTO.getUsuarioAprobadorId() != null) {
+            GDABienAsignacionDTO asignacionUsuarioAprobador = GDABienAsignacionDTO.builder()
+                    .estado(EstadoInactividadEnum.ACTIVO)
+                    .idBien(nuevoBien.getId())
+                    .idUsuario(registroBienDTO.getUsuarioAprobadorId())
+                    .build();
+            asignarResponsabilidades(asignacionUsuarioAprobador);
+
+        }
+
+        // CONTROL
+
+        if (registroBienDTO.getUsuarioControlId() != null) {
+            GDABienAsignacionDTO asignacionUsuarioAprobador = GDABienAsignacionDTO.builder()
+                    .estado(EstadoInactividadEnum.ACTIVO)
+                    .idBien(nuevoBien.getId())
+                    .idUsuario(registroBienDTO.getUsuarioControlId())
+                    .build();
+            asignarResponsabilidades(asignacionUsuarioAprobador);
+
+        }
+
+
+        // REGISTRO
+
+        if (registroBienDTO.getUsuarioRegistroId() != null) {
+            GDABienAsignacionDTO asignacionUsuarioRegistro = GDABienAsignacionDTO.builder()
+                    .estado(EstadoInactividadEnum.ACTIVO)
+                    .idBien(nuevoBien.getId())
+                    .idUsuario(registroBienDTO.getUsuarioRegistroId())
+                    .build();
+            asignarResponsabilidades(asignacionUsuarioRegistro);
+
+        }
+
+
+        // TODO la traza hay que trabajarla con aspectos , pero por ahora esta con una clase utilitaria
         traza.eventoCreacion(nuevoBien);
 
     }
@@ -231,4 +320,6 @@ public class BienServiceImpl implements IBienService {
 
         return null;
     }
+
+
 }

@@ -1,15 +1,12 @@
 package com.horustek.gda.shared.dto.gestionbienes;
 
-import com.horustek.gda.model.domain.*;
-import com.horustek.gda.model.domain.enumeradores.BienEstadoEnum;
+import com.horustek.gda.model.domain.enumeradores.BienEstadoConservacionEnum;
+import com.horustek.gda.model.domain.enumeradores.BienExistenciaInventarioEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -18,17 +15,19 @@ import java.util.List;
 @AllArgsConstructor
 public class RegistroBienDTO {
 
-    private String id;
+    private BienEstadoConservacionEnum estadoConservacion;
     private String detalle;
-    private Date fechaIncorporacion;
+    private BienExistenciaInventarioEnum existenciaInventario;
+    private String tipoBienId;
+    private String categoriaBienId;
+    private String unidadUbicacionId;
+    private String usuarioAprobadorId;
+    private String usuarioAsignadoId;
+    private String usuarioControlId;
+    private String usuarioRegistroId;
+    private String usuarioResponsableId;
     private double valorIncorporacion;
-    private List<GdaBienFijoDatos> gdaBienFijoDatosList;
-    private List<GdaSolictudMovBienEspefico> gdaSolictudMovBienEspeficoList;
-    private List<GdaBien> gdaBienList;
-    private GdaBien gdaBienPadreId;
-    private GdaCategoriaBien gdaCategoriaBienId;
-    private GdaUnidad gdaUnidadUbicacionId;
-    private GdaUsuario gdaUsuarioResponsableId;
-    private GdaBienTipo gdaBienTipo;
-    private BienEstadoEnum bienEstadoEnum;
+    private List<AtributoFormularioBienRequestDTO> atributosDinamicos;
+
+
 }

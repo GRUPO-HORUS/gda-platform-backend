@@ -46,6 +46,7 @@ public interface IBienService {
      */
     void asignarResponsabilidades(GDABienAsignacionDTO dto);
 
+
     /**
      * Listar todas las asignaciones que tienen un bien
      * @param idBien Identificador del Bien del cual se quieren listar las asignaciones

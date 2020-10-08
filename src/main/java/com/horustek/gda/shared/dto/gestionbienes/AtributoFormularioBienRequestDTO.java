@@ -10,10 +10,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AtributoFormularioBienDTO {
+public class AtributoFormularioBienRequestDTO {
 
-    private String id;
+    private String idAtributoCategoriaBien;
     private String nombre;
+    private String valor;
     private boolean  requerido;
     private boolean  unico;
     private TipoDatoAtributosEnum tipoDatoAtributos;
