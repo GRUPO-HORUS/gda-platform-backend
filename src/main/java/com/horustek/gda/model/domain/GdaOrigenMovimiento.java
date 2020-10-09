@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
@@ -46,6 +44,6 @@ public class GdaOrigenMovimiento extends Auditable {
     @Basic(optional = false)
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaOrigenMovimientoId")
-    private List<GdaSolicitudMovBien> gdaSolicitudMovBienList;
+    private List<GdaSolicitud> gdaSolicitudList;
 
 }

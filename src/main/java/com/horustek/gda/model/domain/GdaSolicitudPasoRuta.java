@@ -14,12 +14,10 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
-  /**
+/**
  * Entidad Mapeada de la Base de Datos
  *
  * @author Alejandro Lafourcade
@@ -29,26 +27,30 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table(name = "gda_solicitud_mov_ruta_aprobacion")
+@Table(name = "gda_solicitud_paso_ruta")
 @Getter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = GdaSolicitudMovRutaAprobacion.class)
-public class GdaSolicitudMovRutaAprobacion extends Auditable {
-
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = GdaSolicitudPasoRuta.class)
+public class GdaSolicitudPasoRuta extends Auditable {
     @Id
-    @GeneratedValue(generator = "system-uuid-gda_solicitud_mov_ruta_aprobacion")
-    @GenericGenerator(name = "system-uuid-gda_solicitud_mov_ruta_aprobacion", strategy = "uuid2")
+    @GeneratedValue(generator = "system-uuid-gda_solicitud_mov_paso_ruta")
+    @GenericGenerator(name = "system-uuid-gda_solicitud_mov_paso_ruta", strategy = "uuid2")
     @Basic(optional = false)
     @Column(name = "id")
     private String id;
-    @Column(name = "gda_solicitud_mov_biengda_origen_movimientoid")
-    private String gdaSolicitudMovBiengdaOrigenMovimientoid;
     @Basic(optional = false)
-    @JoinColumn(name = "gda_solicitud_mov_bien_id", referencedColumnName = "id")
+    @Column(name = "orden")
+    private int orden;
+    @Basic(optional = false)
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaSolicitudMovPasoRutaId")
+    private List<GdaSolicitudPasoRutaParticipantes> gdaSolicitudPasoRutaParticipantesList;
+    @JoinColumn(name = "gda_solicitud_mov_ruta_aprobacionid", referencedColumnName = "id")
     @ManyToOne
-    private GdaSolicitudMovBien gdaSolicitudMovBienId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaSolicitudMovRutaAprobacionid")
-    private List<GdaSolicitudMovPasoRuta> gdaSolicitudMovPasoRutaList;
+    private GdaSolicitudRutaAprobacion gdaSolicitudRutaAprobacionid;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaSolicitudMovPasoRutaId")
+    private List<GdaSolicitud> gdaSolicitudList;
+
 }

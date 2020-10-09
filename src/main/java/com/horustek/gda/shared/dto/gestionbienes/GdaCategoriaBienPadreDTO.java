@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.horustek.gda.model.domain.GdaAtributoCategoriaBien;
 import com.horustek.gda.model.domain.GdaBien;
 import com.horustek.gda.model.domain.GdaCategoriaBien;
-import com.horustek.gda.model.domain.GdaSolicitudMovBienPorCategoria;
+import com.horustek.gda.model.domain.GdaSolicitudBienPorCategoria;
 import lombok.Data;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class GdaCategoriaBienPadreDTO {
     private List<GdaAtributoCategoriaBien> gdaAtributoCategoriaBienList;
     @JsonIgnore
     private List<GdaCategoriaBien> gdaCategoriaBienList;
-    private List<GdaSolicitudMovBienPorCategoria> gdaSolicitudMovBienPorCategoriaList;
+    private List<GdaSolicitudBienPorCategoria> gdaSolicitudBienPorCategoriaList;
     private List<GdaBien> gdaBienList;
 
 }

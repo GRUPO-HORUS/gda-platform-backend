@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
@@ -52,7 +50,7 @@ public class GdaCategoriaBien extends Auditable {
     @ManyToOne
     private GdaCategoriaBien gdaCategoriaBienId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaCategoriaBienId")
-    private List<GdaSolicitudMovBienPorCategoria> gdaSolicitudMovBienPorCategoriaList;
+    private List<GdaSolicitudBienPorCategoria> gdaSolicitudBienPorCategoriaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaCategoriaBienId")
     private List<GdaBien> gdaBienList;
 }

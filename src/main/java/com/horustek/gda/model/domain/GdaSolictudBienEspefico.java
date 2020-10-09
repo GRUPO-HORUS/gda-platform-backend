@@ -14,8 +14,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.*;
 
 /**
@@ -27,26 +25,24 @@ import javax.persistence.*;
  * copyright Grupo Horus
  */
 @Entity
-@Table(name = "gda_solictud_mov_bien_espefico")
+@Table(name = "gda_solictud_bien_espefico")
 @Getter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = GdaSolictudMovBienEspefico.class)
-public class GdaSolictudMovBienEspefico extends Auditable {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = GdaSolictudBienEspefico.class)
+public class GdaSolictudBienEspefico extends Auditable {
 
     @Id
-    @Column(name = "gda_solicitud_mov_bien_id")
+    @GeneratedValue(generator = "system-uuid-gda_solicitud_bien_especifico")
+    @GenericGenerator(name = "system-uuid-gda_solicitud_bien_especifico", strategy = "uuid2")
+    @Basic(optional = false)
+    @Column(name = "id")
     private String id;
-    @Basic(optional = false)
-    @Column(name = "gda_solicitud_mov_biengda_origen_movimientoid")
-    private String gdaSolicitudMovBiengdaOrigenMovimientoid;
-    @Basic(optional = false)
-    @JoinColumn(name = "gda_bien_fijoid", referencedColumnName = "id")
-    @ManyToOne
-    private GdaBien gdaBienFijoid;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "gda_solicitud_mov_bien_id")
-    @MapsId
-    private GdaSolicitudMovBien gdaSolicitudMovBien;
+    @JoinColumn(name = "gda_bien_fijo_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private GdaBien gdaBienFijoId;
+    @JoinColumn(name = "gda_solicitud_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private GdaSolicitud gdaSolicitudId;
 }

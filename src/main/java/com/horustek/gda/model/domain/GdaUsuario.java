@@ -15,7 +15,6 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
@@ -80,14 +79,14 @@ public class GdaUsuario extends Auditable {
             uniqueConstraints = {@UniqueConstraint(columnNames = {"gda_usuario_id", "gda_roles_id"})})
     private List<GdaRol> roles;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaUsuarioId")
-    private List<GdaSolicitudMovPasoRutaParticipantes> gdaSolicitudMovPasoRutaParticipantesList;
+    private List<GdaSolicitudPasoRutaParticipantes> gdaSolicitudPasoRutaParticipantesList;
     @JoinColumn(name = "gda_unidad_id", referencedColumnName = "id")
     @ManyToOne
     private GdaUnidad gdaUnidadId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaUsuarioCreadorId")
-    private List<GdaSolicitudMovBien> gdaSolicitudMovBienList;
+    private List<GdaSolicitud> gdaSolicitudList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaUsuarioDestinatarioId")
-    private List<GdaSolicitudMovBien> gdaSolicitudMovBienList1;
+    private List<GdaSolicitud> gdaSolicitudList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaUsuarioResponsableId")
     private List<GdaBien> gdaBienList;
 
