@@ -15,6 +15,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Entidad Mapeada de la Base de Datos
@@ -45,4 +46,6 @@ public class GdaSolictudBienEspefico extends Auditable {
     @JoinColumn(name = "gda_solicitud_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private GdaSolicitud gdaSolicitudId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaUsuarioId")
+    private List<GdaSolicitudPasoRutaParticipantes> gdaSolicitudPasoRutaParticipantesList;
 }

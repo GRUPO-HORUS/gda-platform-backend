@@ -85,8 +85,6 @@ public class GdaUsuario extends Auditable {
     private GdaUnidad gdaUnidadId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaUsuarioCreadorId")
     private List<GdaSolicitud> gdaSolicitudList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaUsuarioDestinatarioId")
-    private List<GdaSolicitud> gdaSolicitudList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaUsuarioResponsableId")
     private List<GdaBien> gdaBienList;
 
