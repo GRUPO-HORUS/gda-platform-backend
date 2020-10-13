@@ -22,6 +22,7 @@ public class GDABienDTO {
     private double valorIncorporacion;
     private String bienEstadoConservacion;
     private String existenciaInventario;
+    private String bienEstadoEnum;
     private GDABienTipoDTO gdaBienTipo;
     private GdaCategoriaBienDTO gdaCategoriaBienId;
     private GdaUnidadBienResponseDTO gdaUnidadUbicacionId;
