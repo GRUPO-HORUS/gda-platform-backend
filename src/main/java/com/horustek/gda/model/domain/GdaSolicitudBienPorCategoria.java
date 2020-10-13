@@ -25,7 +25,7 @@ import javax.persistence.*;
  * copyright Grupo Horus
  */
 @Entity
-@Table(name = "gda_solicitud_mov_bien_por_categoria")
+@Table(name = "gda_solicitud_bien_por_categoria")
 @Getter
 @SuperBuilder
 @NoArgsConstructor
