@@ -1,6 +1,7 @@
 package com.horustek.gda.services.gestionbien.bien;
 
 import com.horustek.gda.model.domain.GdaBienAsignaciones;
+import com.horustek.gda.model.domain.GdaUnidad;
 import com.horustek.gda.shared.dto.gestionbienes.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,7 +39,7 @@ public interface IBienService {
      * Método utilizado para crear el rotulo de un bien
      * @return el número
      */
-    String crearRotuloBien();
+    String crearRotuloBien(GdaUnidad unidad);
 
     /**
      * Realizar una asignación de responsabilidad a un bien
@@ -54,6 +55,9 @@ public interface IBienService {
      * @return Una lista de GDABienAsignacionDTO con los valores de las asignaciones del Bien
      */
     Page<GDABienAsignacionResponseDTO> listadoAsignacionesDeUnBien(String idBien, Pageable pageable);
+
+
+    String secuenciaCodigoUnidades(GdaUnidad unidad);
 
 
 }

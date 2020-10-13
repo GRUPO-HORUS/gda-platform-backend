@@ -1,5 +1,6 @@
 package com.horustek.gda.resources.gestionbienes;
 
+import com.horustek.gda.model.domain.GdaUnidad;
 import com.horustek.gda.services.gestionbien.bien.IBienService;
 import com.horustek.gda.shared.dto.gestionbienes.*;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +54,7 @@ public class BienRestController {
     //TODO quitar este metodo que es solo para pruebas
     @GetMapping("/prueba/public")
     public ResponseEntity<?> prueba() {
-        String prubea = bienService.crearRotuloBien();
+        String prubea = bienService.crearRotuloBien(null);
         return new ResponseEntity<>(prubea, HttpStatus.OK);
     }
 

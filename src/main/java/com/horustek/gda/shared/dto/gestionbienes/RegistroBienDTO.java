@@ -17,6 +17,7 @@ public class RegistroBienDTO {
 
     private BienEstadoConservacionEnum estadoConservacion;
     private String detalle;
+    private String fechaIncorporacion;
     private BienExistenciaInventarioEnum existenciaInventario;
     private String tipoBienId;
     private String categoriaBienId;

@@ -29,10 +29,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -64,9 +61,9 @@ public class BienServiceImpl implements IBienService {
         BienEstadoEnum bienEstadoEnum = BienEstadoEnum.PENDIENTE_ETIQUETADO;
 
         // Si a la hora de la creación se le especifica la ubicación entonces hay que asignar el bien a esta ubicación
-        GdaUnidad unidadDelBien = null;
+        Optional<GdaUnidad> unidadDelBien = Optional.empty();
         if (registroBienDTO.getUnidadUbicacionId() != null)
-            unidadDelBien = unidadRepository.getOne(registroBienDTO.getUnidadUbicacionId());
+            unidadDelBien = unidadRepository.findById(registroBienDTO.getUnidadUbicacionId());
 
         // Tipo del Bien
         GdaBienTipo gdaBienTipo = null;
@@ -80,7 +77,7 @@ public class BienServiceImpl implements IBienService {
 
 
         // Crear el rotulo del bien
-        String rotulado = crearRotuloBien();
+        String rotulado = crearRotuloBien(unidadDelBien.get());
 
 
         // Salvar los bienes padres
@@ -90,7 +87,7 @@ public class BienServiceImpl implements IBienService {
                 .existenciaInventario(registroBienDTO.getExistenciaInventario())
                 .gdaBienTipo(gdaBienTipo)
                 .gdaCategoriaBienId(gdaCategoriaBien)
-                .gdaUnidadUbicacionId(unidadDelBien)
+                .gdaUnidadUbicacionId(unidadDelBien.get())
                 .valorIncorporacion(registroBienDTO.getValorIncorporacion())
                 .bienEstado(bienEstadoEnum)
                 .fechaIncorporacion(new Date())
@@ -225,9 +222,15 @@ public class BienServiceImpl implements IBienService {
     }
 
     @Override
-    public String crearRotuloBien() {
+    public String crearRotuloBien(GdaUnidad unidad) {
 
         // El # del Rótulo se compone de la siguiente manera: AA-BB-CC-DD
+        String AA = "18"; // Este es el numero de Senave
+        String BB_CC = null;
+        String unidadesCodigos = null;
+
+        // Cargar la jerarquia de las unidades del bien y quedarse con los código
+        BB_CC = secuenciaCodigoUnidades(unidad);
 
 
         List<GdaBien> bienList = bienRepository.findByRotuladoIsNotNullOrderByFechaCreacionDesc();
@@ -242,7 +245,7 @@ public class BienServiceImpl implements IBienService {
             cerosACompletar.append("0");
         }
 
-        return String.format("%s-%s-%s", "0000", "0001", cerosACompletar + String.valueOf(numeroBien));
+        return String.format("%s-%s%s", AA, BB_CC, cerosACompletar + String.valueOf(numeroBien));
 
     }
 
@@ -325,6 +328,34 @@ public class BienServiceImpl implements IBienService {
         }
 
         return null;
+    }
+
+    public String secuenciaCodigoUnidades(GdaUnidad unidad) {
+
+        if (unidad != null) {
+            String secuenciaCodigo = "";
+            GdaUnidad unidadExt = unidad;
+
+
+            List<String> listadoCodigos = new ArrayList<>();
+
+            while (unidadExt != null && unidadExt.getGdaUnidadPadreId() != null) {
+
+                listadoCodigos.add(unidadExt.getCodigo());
+                unidadExt = unidadExt.getGdaUnidadPadreId();
+
+            }
+            listadoCodigos.add(unidadExt.getCodigo());
+            Collections.reverse(listadoCodigos);
+
+            for (String codigo : listadoCodigos) {
+                secuenciaCodigo += codigo + "-";
+            }
+
+            return secuenciaCodigo;
+        }
+        return null;
+
     }
 
 

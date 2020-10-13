@@ -45,6 +45,8 @@ public class GdaUnidad extends Auditable {
     @Basic(optional = false)
     @Column(name = "nombre")
     private String nombre;
+    @Column(name = "codigo")
+    private String codigo;
     @Basic(optional = false)
     @JoinColumn(name = "gda_entidad_id", referencedColumnName = "id")
     @ManyToOne

@@ -65,7 +65,7 @@ public class GdaBien extends Auditable {
     private List<GdaBienTraza> gdaBienTrazaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaBienFijoId")
     private List<GdaBienFijoDatos> gdaBienFijoDatosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaBienFijoid")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaBienFijoId")
     private List<GdaSolictudBienEspefico> gdaSolictudBienEspeficoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gdaBienPadreId")
     private List<GdaBien> gdaBienList;
