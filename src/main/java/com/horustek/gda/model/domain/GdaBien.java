@@ -90,7 +90,6 @@ public class GdaBien extends Auditable {
     @Column(name = "estado_conservacion")
     @Enumerated(EnumType.STRING)
     private BienEstadoConservacionEnum bienEstadoConservacion;
-
     @Column(name = "existencia_inventario")
     @Enumerated(EnumType.STRING)
     private BienExistenciaInventarioEnum existenciaInventario;
